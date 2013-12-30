@@ -28,17 +28,15 @@ namespace Suidao {
 
     // Default constructor just to appease the compiler
     Column::Column() {
-        rock_type = "";
-        segments = new std::vector<Segment>;
+        this->rock_type = 0;
     }
 
-    Column::Column(int height, std::string rock_type="") {
+    Column::Column(int height, int rock_type) {
         this->rock_type = rock_type;
-        this->segments = new std::vector<Segment>;
         this->segments.push_back(Segment(height));
     }
 
-    Column::make_cut(int top, int bottom, std::string tilt_type="") {
+    void Column::make_cut(int top, int bottom, int tilt_type) {
         // TODO: binary search for segments to delete/trim.
     }
     
@@ -46,9 +44,9 @@ namespace Suidao {
     // Segment function implementations
     //
     
-    explicit Segment::Segment(int top=0, int bottom=0,
-                     std::string tilt_type="",
-                     std::string surface_type="") {
+    Segment::Segment(int top, int bottom, 
+                     int tilt_type, 
+                     int surface_type) {
         this->top = top;
         this->bottom = bottom;
         this->tilt_type = tilt_type;
