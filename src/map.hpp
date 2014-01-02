@@ -4,17 +4,16 @@
 
 namespace Suidao {
 
-enum TiltDirections {
-    NONE = 0,
-    N = 1, E = 2, S = 4, W = 8
+enum Orientation {
+    N, E, S, W,
 };
-enum TiltAngle {
-    FLAT, DOWN, UP
+enum TiltStyle {
+    FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, V_DOWN, DIAGONAL,
 };
 
 struct TiltType {
-    TiltDirections direction;
-    TiltAngle angle1, angle2;
+    Orientation orientation;
+    TiltStyle style;
 };
 
 typedef int SurfaceType;
