@@ -5,6 +5,21 @@
 
 namespace Suidao {
 
+class GameTimer {
+  private:
+    int _tick;
+    unsigned long long _lastTickStart;
+    unsigned long long _lastTickEnd;
+  public:
+    int get_tick();
+    void nextTickStart();
+    void nextTickEnd();
+    // Both in milliseconds
+    unsigned long long timeSinceLastTickStart(); 
+    unsigned long long timeSinceLastTickEnd();
+    GameTimer();
+};
+
 class Game {
   private:
     GameTimer _timer;
@@ -20,21 +35,6 @@ class Game {
     void Run();
     Game();
 };
-
-class GameTimer {
-  private:
-    int _tick;
-    unsigned long long _lastTickStart;
-    unsigned long long _lastTickEnd;
-  public:
-    int get_tick();
-    void nextTickStart();
-    void nextTickEnd();
-    // Both in milliseconds
-    unsigned long long timeSinceLastTickStart(); 
-    unsigned long long timeSinceLastTickEnd();
-    Timestamp();
-}
 
 }
 
