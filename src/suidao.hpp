@@ -30,6 +30,7 @@ class Game {
     SDL_Surface* screen;
     
     void Init();
+    void LoadContent();
     void Input();
     void Network();
     void Update();

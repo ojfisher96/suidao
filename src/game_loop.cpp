@@ -5,6 +5,7 @@ namespace Suidao {
 
 void Game::Run() {
     Init();
+    LoadContent();
     for (;;) {
         Input();
         Network();

@@ -13,6 +13,10 @@ void Game::Init() {
     screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE);
 }
 
+void Game::LoadContent() {
+    
+}
+
 void Game::Input() {
     
 }
@@ -27,6 +31,7 @@ void Game::Update() {
 
 void Game::Draw() {
     SDL_Flip(screen);
+    
 }
 
 }
