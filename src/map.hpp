@@ -1,6 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include <vector>
+#include "SDL/SDL.h"
 
 namespace Suidao {
 
@@ -34,6 +35,8 @@ class Column {
     // a sorted vector does fine.
     std::vector<Segment> segments;
 public:
+    int get_num_segments();
+    const Segment& get_segment(int segment_num);
     void make_cut(int top, int bottom, TiltType tilt_type=TiltType());
     void bore(int tilt_type);
     Column();
@@ -44,6 +47,8 @@ class Map {
     int height, width;
     Column **columns;
 public:
+    // Test draw function
+    void Draw(SDL_Surface *screen);
     Map(int height, int width);
     Map();
     ~Map();

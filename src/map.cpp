@@ -29,7 +29,7 @@ Map::~Map() {
     delete[] this->columns;
 }
 
-///
+//
 // Column function implementations
 //
 
@@ -46,7 +46,15 @@ Column::Column(int height, RockType rock_type) {
 void Column::make_cut(int top, int bottom, TiltType tilt_type) {
     // TODO: binary search for segments to delete/trim.
 }
-    
+
+int Column::get_num_segments() {
+    return segments.size();
+}
+
+const Segment& Column::get_segment(int segment_num) {
+    return segments[segment_num];
+}
+
 //
 // Segment function implementations
 //
