@@ -3,7 +3,7 @@
 
 namespace Suidao {
 
-Game::Run() {
+void Game::Run() {
     Init();
     for (;;) {
         Input();
@@ -17,24 +17,24 @@ Game::Run() {
     }
 }
 
-int Timestamp::get_tick() {
+int GameTimer::get_tick() {
     return _tick;
 }
 
-void Timestamp::nextTickStart() {
+void GameTimer::nextTickStart() {
     _tick++;
     _lastTickStart = SDL_GetTicks();
 }
 
-void nextTickEnd() {
+void GameTimer::nextTickEnd() {
     _lastTickEnd = SDL_GetTicks();
 }
 
-unsigned long long timeSinceLastTickStart() {
+unsigned long long GameTimer::timeSinceLastTickStart() {
     return SDL_GetTicks() - _lastTickStart;
 }
 
-unsigned long long timeSinceLastTickEnd() {
+unsigned long long GameTimer::timeSinceLastTickEnd() {
     return SDL_GetTicks() - _lastTickEnd;
 }
 
