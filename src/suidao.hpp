@@ -7,7 +7,7 @@ namespace Suidao {
 
 class Game {
   private:
-    Timestamp _ts;
+    GameTimer _timer;
     
     Map map;
 
@@ -21,7 +21,7 @@ class Game {
     Game();
 };
 
-class Timestamp {
+class GameTimer {
   private:
     int _tick;
     unsigned long long _lastTickStart;

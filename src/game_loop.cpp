@@ -9,9 +9,9 @@ Game::Run() {
         Input();
         Network();
         
-        _ts.nextTickStart();
+        _timer.nextTickStart();
         Update();
-        _ts.nextTickEnd();
+        _timer.nextTickEnd();
         
         Draw();
     }
