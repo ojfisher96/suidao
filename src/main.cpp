@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[]) {
     // TODO: handle command line arguments.
-    Suidao::Game game = Suidao::Game();
+    Suidao::Game game;
     game.Run();
     return 0;
 }

@@ -45,6 +45,7 @@ class Map {
     Column **columns;
 public:
     Map(int height, int width);
+    Map();
     ~Map();
 };
 

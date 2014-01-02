@@ -2,6 +2,7 @@
 #define SUIDAO_HPP
 
 #include "map.hpp"
+#include "SDL/SDL.h"
 
 namespace Suidao {
 
@@ -25,7 +26,9 @@ class Game {
     GameTimer _timer;
     
     Map map;
-
+    
+    SDL_Surface* screen;
+    
     void Init();
     void Input();
     void Network();

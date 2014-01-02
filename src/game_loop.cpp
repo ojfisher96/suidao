@@ -17,6 +17,12 @@ void Game::Run() {
     }
 }
 
+GameTimer::GameTimer() {
+    _tick = 0;
+    _lastTickStart = 0;
+    _lastTickEnd = 0;
+}
+
 int GameTimer::get_tick() {
     return _tick;
 }

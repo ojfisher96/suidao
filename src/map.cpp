@@ -14,6 +14,13 @@ Map::Map(int height, int width) {
         this->columns[x] = new Column[height];
     }
 }
+
+// Default constructor just to appease the compiler
+Map::Map() {
+    this->height = 0;
+    this->width = 0;
+    this->columns = 0; // NULL
+}
     
 Map::~Map() {
     for (int x = 0; x < width; x++) {
