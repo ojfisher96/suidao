@@ -1,17 +1,49 @@
 #include "map.hpp"
+#include "content.hpp"
+#include "SDL/SDL.h"
+#include "SDL/SDL_image.h"
+#include <cmath>
+#include <cstdio>
 
 namespace Suidao {
 //
 // Map function implementations
 //
 
-// Dummy constructor, columns will be initialised to empty values.
 Map::Map(int height, int width) {
     this->height = height;
     this->width = width;
     this->columns = new Column*[width];
     for (int x = 0; x < width; x++) {
         this->columns[x] = new Column[height];
+        for (int y = 0; y < height; y++) {
+            this->columns[x][y] = Column(1,5);
+        }
+    }
+}
+
+// Test draw function
+void Map::Draw(SDL_Surface *screen) {
+    // Starting at other side is a hack to get draw order correct.
+    for (int x = width-1; x >= 0; x--) {
+        for (int y = 0; y < height; y++) {
+            double transformed_x = (x/sqrt(2.0) + y/sqrt(2.0)) * 32;
+            double transformed_y = ((-x/sqrt(2.0) + y/sqrt(2.0))/2 + 6) * 32;
+
+            const Segment& cur_segment = columns[x][y].get_segment(0);
+            SDL_Rect tile_sheet_fragment;
+            SDL_Rect offset;
+            tile_sheet_fragment.x =
+                    64*cur_segment.tilt_type.orientation;
+            tile_sheet_fragment.y =
+                    64*cur_segment.tilt_type.style;
+            tile_sheet_fragment.w = 64;
+            tile_sheet_fragment.h = 64;
+            offset.x = (int)transformed_x;
+            offset.y = (int)transformed_y;
+            SDL_BlitSurface(Content::SurfaceSheet, &tile_sheet_fragment,
+                            screen, &offset);
+        }
     }
 }
 
@@ -21,13 +53,15 @@ Map::Map() {
     this->width = 0;
     this->columns = 0; // NULL
 }
-    
+
+/*
 Map::~Map() {
     for (int x = 0; x < width; x++) {
         delete[] this->columns[x];
     }
     delete[] this->columns;
 }
+*/
 
 //
 // Column function implementations
@@ -48,11 +82,11 @@ void Column::make_cut(int top, int bottom, TiltType tilt_type) {
 }
 
 int Column::get_num_segments() {
-    return segments.size();
+    return this->segments.size();
 }
 
 const Segment& Column::get_segment(int segment_num) {
-    return segments[segment_num];
+    return this->segments[segment_num];
 }
 
 //

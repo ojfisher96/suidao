@@ -8,12 +8,13 @@
 namespace Suidao {
 
 Game::Game() {
-    map = Map(10,10);
+    
 }
 
 void Game::Init() {
     SDL_Init(SDL_INIT_EVERYTHING);
     screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE);
+    map = Map(10,10);
 }
 
 SDL_Surface *Content::SurfaceSheet;
@@ -45,8 +46,8 @@ void Game::Update() {
 }
 
 void Game::Draw() {
+    map.Draw(screen);
     SDL_Flip(screen);
-    
 }
 
 }

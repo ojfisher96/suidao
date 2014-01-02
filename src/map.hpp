@@ -51,7 +51,7 @@ public:
     void Draw(SDL_Surface *screen);
     Map(int height, int width);
     Map();
-    ~Map();
+//    ~Map();
 };
 
 }
