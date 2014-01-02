@@ -16,6 +16,8 @@ void Game::Init() {
     screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE);
 }
 
+SDL_Surface *Content::SurfaceSheet;
+
 void Game::LoadContent() {
     SDL_Surface *loaded_image = IMG_Load("graphics/tiles.png");
     if (loaded_image != NULL) {

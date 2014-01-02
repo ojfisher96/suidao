@@ -5,7 +5,7 @@
 namespace Suidao {
 namespace Content {
 
-SDL_Surface *SurfaceSheet;
+extern SDL_Surface *SurfaceSheet;
 
 }
 }
