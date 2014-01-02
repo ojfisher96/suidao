@@ -21,9 +21,12 @@ void Game::LoadContent() {
     if (loaded_image != NULL) {
         Content::SurfaceSheet = SDL_DisplayFormat(loaded_image);
         SDL_FreeSurface(loaded_image);
-    } else {
-        fprintf(stderr, "Error: image not loaded.");
-        exit(1);
+        if (Content::SurfaceSheet != NULL) {
+            int color_key = SDL_MapRGB(Content::SurfaceSheet->format,
+                                       0, 0, 0xFF);
+            SDL_SetColorKey(Content::SurfaceSheet,
+                            SDL_SRCCOLORKEY, color_key);
+        }
     }
 }
 
