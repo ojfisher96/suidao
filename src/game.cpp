@@ -20,7 +20,7 @@ void Game::Init() {
 SDL_Surface *Content::SurfaceSheet;
 
 void Game::LoadContent() {
-    SDL_Surface *loaded_image = IMG_Load("graphics/tiles.png");
+    SDL_Surface *loaded_image = IMG_Load("content/graphics/tiles.png");
     if (loaded_image != NULL) {
         Content::SurfaceSheet = SDL_DisplayFormat(loaded_image);
         SDL_FreeSurface(loaded_image);
