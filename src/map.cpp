@@ -23,7 +23,7 @@ Map::Map(int height, int width) {
 }
 
 // Test draw function
-void Map::Draw(SDL_Surface *screen) {
+void Map::Draw(SDL_Surface *screen, Content &content) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
@@ -41,8 +41,10 @@ void Map::Draw(SDL_Surface *screen) {
             tile_sheet_fragment.h = 64;
             offset.x = (int)transformed_x;
             offset.y = (int)transformed_y;
-            SDL_BlitSurface(Content::SurfaceSheet, &tile_sheet_fragment,
-                            screen, &offset);
+            SDL_BlitSurface(
+                content.GetGraphic("content/graphics/tiles.png"),
+                                   &tile_sheet_fragment,
+                                   screen, &offset);
         }
     }
 }

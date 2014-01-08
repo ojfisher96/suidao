@@ -2,6 +2,7 @@
 #define MAP_HPP
 #include <vector>
 #include "SDL/SDL.h"
+#include "content.hpp"
 
 namespace Suidao {
 
@@ -48,7 +49,7 @@ class Map {
     Column **columns;
 public:
     // Test draw function
-    void Draw(SDL_Surface *screen);
+    void Draw(SDL_Surface *screen, Content& content);
     Map(int height, int width);
     Map();
 //    ~Map();

@@ -26,6 +26,7 @@ class Game {
     GameTimer _timer;
     
     Map map;
+    Content content;
     
     SDL_Surface* screen;
     

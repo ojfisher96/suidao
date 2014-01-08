@@ -17,20 +17,13 @@ void Game::Init() {
     map = Map(10,10);
 }
 
-SDL_Surface *Content::SurfaceSheet;
-
 void Game::LoadContent() {
-    SDL_Surface *loaded_image = IMG_Load("content/graphics/tiles.png");
-    if (loaded_image != NULL) {
-        Content::SurfaceSheet = SDL_DisplayFormat(loaded_image);
-        SDL_FreeSurface(loaded_image);
-        if (Content::SurfaceSheet != NULL) {
-            int color_key = SDL_MapRGB(Content::SurfaceSheet->format,
-                                       0, 0, 0xFF);
-            SDL_SetColorKey(Content::SurfaceSheet,
-                            SDL_SRCCOLORKEY, color_key);
-        }
-    }
+    content.LoadContent("content");
+    int color_key = SDL_MapRGB(
+        content.GetGraphic("content/graphics/tiles.png")->format,
+        0, 0, 0xFF);
+    SDL_SetColorKey(content.GetGraphic("content/graphics/tiles.png"),
+                    SDL_SRCCOLORKEY, color_key);
 }
 
 void Game::Input() {
@@ -46,7 +39,7 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-    map.Draw(screen);
+    map.Draw(screen, content);
     SDL_Flip(screen);
 }
 
