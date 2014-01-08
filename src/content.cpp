@@ -50,8 +50,11 @@ void Content::_LoadFolder(std::string path) {
             
             struct stat file_attributes;
             stat(full_path.c_str(), &file_attributes);
-            
+#ifdef WIN32
+            if (ent->d_type == DT_REG) {
+#else
             if (S_ISREG(file_attributes.st_mode)) {
+#endif
                 switch (_FileType(ent->d_name)) {
                     case GRAPHIC:
                         loaded_image = IMG_Load(full_path.c_str());
@@ -71,7 +74,11 @@ void Content::_LoadFolder(std::string path) {
                     default:
                         break;
                 }
+#ifdef WIN32
+            } else if (ent->d_type == DT_DIR) {
+#else
             } else if (S_ISDIR(file_attributes.st_mode)) {
+#endif
                 _LoadFolder(std::string(full_path));
             }
         }
