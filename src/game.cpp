@@ -19,11 +19,6 @@ void Game::Init() {
 
 void Game::LoadContent() {
     content.LoadContent("content");
-    int color_key = SDL_MapRGB(
-        content.GetGraphic("content/graphics/tiles.png")->format,
-        0, 0, 0xFF);
-    SDL_SetColorKey(content.GetGraphic("content/graphics/tiles.png"),
-                    SDL_SRCCOLORKEY, color_key);
 }
 
 void Game::Input() {
