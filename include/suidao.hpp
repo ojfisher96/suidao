@@ -36,6 +36,8 @@ class Game {
     void Network();
     void Update();
     void Draw();
+    void Exit();
+    void CleanUp();
   public:
     void Run();
     Game();

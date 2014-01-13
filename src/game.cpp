@@ -30,12 +30,21 @@ void Game::Network() {
 }
 
 void Game::Update() {
-    
+    SDL_Event event;
+    while (SDL_PollEvent(&event) != 0) {
+        if (event.type == SDL_QUIT) {
+            Exit();
+        }
+    }
 }
 
 void Game::Draw() {
     map.Draw(screen, content);
     SDL_Flip(screen);
+}
+
+void Game::CleanUp() {
+    SDL_Quit();
 }
 
 }

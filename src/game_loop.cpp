@@ -18,6 +18,11 @@ void Game::Run() {
     }
 }
 
+void Game::Exit() {
+    CleanUp();
+    exit(0);
+}
+
 GameTimer::GameTimer() {
     _tick = 0;
     _lastTickStart = 0;
