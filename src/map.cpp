@@ -17,7 +17,22 @@ Map::Map(int height, int width) {
     for (int x = 0; x < width; x++) {
         this->columns[x] = new Column[height];
         for (int y = 0; y < height; y++) {
-            this->columns[x][y] = Column(1);
+            // this->columns[x][y] = Column(1);
+            if (y < height/2) {
+                this->columns[x][y] = height/2 - y - 1;
+                TiltType tilt;
+                tilt.style = SIDE_UP;
+                tilt.orientation = W;
+                this->columns[x][y].retilt(tilt);
+            } else if (y > height/2) {
+                this->columns[x][y] = y - height/2 - 1;
+                TiltType tilt;
+                tilt.style = SIDE_UP;
+                tilt.orientation = E;
+                this->columns[x][y].retilt(tilt);
+            } else {
+                this->columns[x][y] = 0;
+            }
         }
     }
 }
