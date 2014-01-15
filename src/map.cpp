@@ -27,8 +27,10 @@ void Map::Draw(SDL_Surface *screen, Content &content) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
-            double transformed_x = (x/sqrt(2.0) + y/sqrt(2.0)) * 32;
-            double transformed_y = ((-x/sqrt(2.0) + y/sqrt(2.0))/2 + 6) * 32;
+            double transformed_x = (x/sqrt(2.0) + y/sqrt(2.0))
+                * 32 * sqrt(2.0);
+            double transformed_y = ((-x/sqrt(2.0) + y/sqrt(2.0))/2 + 5)
+                * 32 * sqrt(2.0);
 
             const Segment& cur_segment = columns[x][y].get_segment(0);
             SDL_Rect tile_sheet_fragment;
