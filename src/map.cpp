@@ -17,7 +17,7 @@ Map::Map(int height, int width) {
     for (int x = 0; x < width; x++) {
         this->columns[x] = new Column[height];
         for (int y = 0; y < height; y++) {
-            this->columns[x][y] = Column(1,5);
+            this->columns[x][y] = Column(1);
         }
     }
 }
@@ -40,7 +40,7 @@ void Map::Draw(SDL_Surface *screen, Content &content) {
             tile_sheet_fragment.w = 64;
             tile_sheet_fragment.h = 64;
             offset.x = (int)transformed_x;
-            offset.y = (int)transformed_y;
+            offset.y = (int)transformed_y - cur_segment.top*16;
             SDL_BlitSurface(
                 content.GetGraphic("content/graphics/tiles.png"),
                                    &tile_sheet_fragment,
