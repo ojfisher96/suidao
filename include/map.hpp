@@ -10,7 +10,7 @@ enum Orientation {
     N, E, S, W,
 };
 enum TiltStyle {
-    FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, V_DOWN, DIAGONAL,
+    FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, DIAGONAL, // V_DOWN,
 };
 
 struct TiltType {
