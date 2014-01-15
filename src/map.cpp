@@ -85,6 +85,10 @@ void Column::make_cut(int top, int bottom, TiltType tilt_type) {
     // TODO: binary search for segments to delete/trim.
 }
 
+void Column::retilt(TiltType tilt_type) {
+    this->segments[0].tilt_type = tilt_type;
+}
+
 int Column::get_num_segments() {
     return this->segments.size();
 }

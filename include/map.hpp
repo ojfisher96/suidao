@@ -39,7 +39,8 @@ public:
     int get_num_segments();
     const Segment& get_segment(int segment_num);
     void make_cut(int top, int bottom, TiltType tilt_type=TiltType());
-    void bore(int tilt_type);
+    void bore(TiltType tilt_type);
+    void retilt(TiltType tilt_type);
     Column();
     Column(int height, int rock_type=0);
 };
