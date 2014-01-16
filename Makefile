@@ -1,8 +1,12 @@
 CXX=g++
 CXXFLAGS=-std=c++11 -g -p -pg -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual -Wextra -Wno-unused-parameter -Wno-unused-function -iquote include/
 
+
 ifeq ($(OS),Windows_NT)
 	CXXFLAGS += -I include/win
+	LDFLAGS=-lSDLmain -lSDL -lSDL_image -lSDL_mixer -mwindows
+else
+	LDFLAGS=-lSDL -lSDL_image -lSDL_mixer
 endif
 
 all: suidao
@@ -26,7 +30,7 @@ clean:
 	    rm -f suidao
 
 suidao:        src/content.o src/game.o src/game_loop.o src/main.o src/map.o
-		$(CXX) $(CXXFLAGS) -o suidao src/*.o -lSDL -lSDL_image -lSDL_mixer
+		$(CXX) $(CXXFLAGS) -o suidao src/*.o $(LDFLAGS)
 
 src/%.o: src/%.cpp include/%.hpp
 
