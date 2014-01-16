@@ -3,8 +3,8 @@ CXXFLAGS=-std=c++11 -g -p -pg -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qu
 
 
 ifeq ($(OS),Windows_NT)
-	CXXFLAGS += -I include/win
-	LDFLAGS=-lSDLmain -lSDL -lSDL_image -lSDL_mixer -mwindows
+	CXXFLAGS += -I include/win -I ../SDL/include
+	LDFLAGS= -L ../SDL/lib -lSDLmain -lSDL -lSDL_image -lSDL_mixer -mwindows
 else
 	LDFLAGS=-lSDL -lSDL_image -lSDL_mixer
 endif
