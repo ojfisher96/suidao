@@ -2,7 +2,7 @@ CXX=g++
 CXXFLAGS=-std=c++11 -g -p -pg -pedantic -Wall -Wshadow -Wpointer-arith -Wcast-qual -Wextra -Wno-unused-parameter -Wno-unused-function -iquote include/
 
 ifeq ($(OS),Windows_NT)
-	CCFLAGS += -I include/win
+	CXXFLAGS += -I include/win
 endif
 
 all: suidao
