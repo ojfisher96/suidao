@@ -42,11 +42,9 @@ void Map::Draw(SDL_Surface *screen, Content &content) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
-            double transformed_x = (x/sqrt(2.0) + y/sqrt(2.0))
-                * 32 * sqrt(2.0);
-            double transformed_y = ((-x/sqrt(2.0) + y/sqrt(2.0))/2 + 5)
-                * 32 * sqrt(2.0);
-
+            int transformed_x = (x + y) * 32;
+            int transformed_y = ((-x + y) + 15) * 16;
+            
             const Segment& cur_segment = columns[x][y].get_segment(0);
             SDL_Rect tile_sheet_fragment;
             SDL_Rect offset;
@@ -56,8 +54,8 @@ void Map::Draw(SDL_Surface *screen, Content &content) {
                     64*cur_segment.tilt_type.style;
             tile_sheet_fragment.w = 64;
             tile_sheet_fragment.h = 64;
-            offset.x = (int)transformed_x;
-            offset.y = (int)transformed_y - cur_segment.top*16;
+            offset.x = transformed_x;
+            offset.y = transformed_y - cur_segment.top*16;
             SDL_BlitSurface(
                 content.GetGraphic("content/graphics/tiles.png"),
                                    &tile_sheet_fragment,
