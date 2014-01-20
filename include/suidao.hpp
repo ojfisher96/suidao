@@ -9,15 +9,15 @@ namespace Suidao {
 class GameTimer {
   private:
     int _tick;
-    unsigned long long _lastTickStart;
-    unsigned long long _lastTickEnd;
+    unsigned int _lastTickStart;
+    unsigned int _lastTickEnd;
   public:
     int get_tick();
     void nextTickStart();
     void nextTickEnd();
     // Both in milliseconds
-    unsigned long long timeSinceLastTickStart(); 
-    unsigned long long timeSinceLastTickEnd();
+    unsigned int timeSinceLastTickStart(); 
+    unsigned int timeSinceLastTickEnd();
     GameTimer();
 };
 

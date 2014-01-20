@@ -42,11 +42,11 @@ void GameTimer::nextTickEnd() {
     _lastTickEnd = SDL_GetTicks();
 }
 
-unsigned long long GameTimer::timeSinceLastTickStart() {
+unsigned int long GameTimer::timeSinceLastTickStart() {
     return SDL_GetTicks() - _lastTickStart;
 }
 
-unsigned long long GameTimer::timeSinceLastTickEnd() {
+unsigned int long GameTimer::timeSinceLastTickEnd() {
     return SDL_GetTicks() - _lastTickEnd;
 }
 
