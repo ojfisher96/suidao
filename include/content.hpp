@@ -1,7 +1,7 @@
 #ifndef CONTENT_HPP
 #define CONTENT_HPP
-#include "SDL/SDL.h"
-#include "SDL/SDL_mixer.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_mixer.h"
 #include <string>
 #include <map>
 
@@ -13,10 +13,10 @@ class Content {
     std::map<std::string,SDL_Surface*> _graphics;
     std::map<std::string,Mix_Chunk*> _sounds;
     std::map<std::string,Mix_Music*> _musics;
-    void _LoadFolder(std::string path);
+    void _LoadFolder(std::string path, SDL_PixelFormat* format);
     ContentType _FileType(std::string path);
   public:
-    void LoadContent(std::string folder);
+    void LoadContent(std::string folder, SDL_PixelFormat* format);
     SDL_Surface* GetGraphic(std::string path);
     Mix_Chunk* GetSound(std::string path);
     Mix_Music* GetMusic(std::string path);

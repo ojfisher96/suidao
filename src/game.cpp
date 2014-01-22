@@ -1,6 +1,6 @@
 #include <cstdio>
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
 #include "suidao.hpp"
 #include "map.hpp"
 #include "content.hpp"
@@ -13,12 +13,17 @@ Game::Game() {
 
 void Game::Init() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE);
+    window = SDL_CreateWindow( "suidao",
+                               SDL_WINDOWPOS_CENTERED,
+                               SDL_WINDOWPOS_CENTERED,
+                               SCREEN_WIDTH, SCREEN_HEIGHT,
+                               SDL_WINDOW_SHOWN);
+    screen = SDL_GetWindowSurface(window);
     map = Map(10,10);
 }
 
 void Game::LoadContent() {
-    content.LoadContent("content");
+    content.LoadContent("content", screen->format);
 }
 
 void Game::Input() {
@@ -40,7 +45,7 @@ void Game::Update() {
 
 void Game::Draw() {
     map.Draw(screen, content);
-    SDL_Flip(screen);
+    SDL_UpdateWindowSurface(window);
 }
 
 void Game::CleanUp() {

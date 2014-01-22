@@ -1,7 +1,7 @@
 #include "content.hpp"
-#include "SDL/SDL.h"
-#include "SDL/SDL_image.h"
-#include "SDL/SDL_mixer.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_image.h"
+#include "SDL2/SDL_mixer.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -9,12 +9,13 @@
 
 namespace Suidao {
 
-void Content::LoadContent(std::string folder) {
+void Content::LoadContent(std::string folder,
+                          SDL_PixelFormat* format) {
     // TODO: Write code to deal with wrapping default content.
     // i.e. the first folder loaded is default, and therefore
     // is accessed from some default folder in the Content
     // hierarchy, rather than from the actual folder name.
-    _LoadFolder(folder);
+    _LoadFolder(folder, format);
 }
 
 SDL_Surface* Content::GetGraphic(std::string path) {
@@ -29,7 +30,8 @@ Mix_Music* Content::GetMusic(std::string path) {
     return _musics[path];
 }
 
-void Content::_LoadFolder(std::string path) {
+void Content::_LoadFolder(std::string path,
+                          SDL_PixelFormat* format) {
     DIR *dir;
     dirent *ent;
     dir = opendir(path.c_str());
@@ -60,7 +62,8 @@ void Content::_LoadFolder(std::string path) {
                         loaded_image = IMG_Load(full_path.c_str());
                         if (loaded_image != NULL) {
                             _graphics[full_path] =
-                                    SDL_DisplayFormat(loaded_image);
+                                    SDL_ConvertSurface(loaded_image,
+                                                       format, 0);
                         }
                         break;
                     case SOUND:
@@ -79,7 +82,7 @@ void Content::_LoadFolder(std::string path) {
 #else
             } else if (S_ISDIR(file_attributes.st_mode)) {
 #endif
-                _LoadFolder(std::string(full_path));
+                _LoadFolder(std::string(full_path), format);
             }
         }
     }
