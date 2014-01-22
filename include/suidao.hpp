@@ -2,9 +2,12 @@
 #define SUIDAO_HPP
 
 #include "map.hpp"
-#include "SDL/SDL.h"
+#include "SDL2/SDL.h"
 
 namespace Suidao {
+
+#define SCREEN_WIDTH  640
+#define SCREEN_HEIGHT 480
 
 class GameTimer {
   private:
@@ -27,7 +30,8 @@ class Game {
     
     Map map;
     Content content;
-    
+
+    SDL_Window* window;
     SDL_Surface* screen;
     
     void Init();

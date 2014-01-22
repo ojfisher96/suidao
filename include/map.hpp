@@ -1,7 +1,7 @@
 #ifndef MAP_HPP
 #define MAP_HPP
 #include <vector>
-#include "SDL/SDL.h"
+#include "SDL2/SDL.h"
 #include "content.hpp"
 
 namespace Suidao {
