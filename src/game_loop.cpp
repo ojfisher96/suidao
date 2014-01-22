@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "SDL2/SDL.h"
 #include "suidao.hpp"
 
@@ -20,7 +21,7 @@ void Game::Run() {
 
 void Game::Exit() {
     CleanUp();
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
 
 GameTimer::GameTimer() {
