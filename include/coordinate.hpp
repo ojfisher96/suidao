@@ -1,3 +1,5 @@
+#ifndef COORDINATE_HPP
+#define COORDINATE_HPP
 namespace suidao {
 
 template <class T>
@@ -83,3 +85,4 @@ Vector3<T> operator-(const Coord3<T>& c1, const Coord3<T>& c2);
 
 
 }
+#endif // COORDINATE_HPP
