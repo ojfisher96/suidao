@@ -50,7 +50,8 @@ class Map {
     Column **columns;
 public:
     // Test draw function
-    void Draw(SDL_Surface *screen, Content& content);
+    void Draw(SDL_Surface *screen, Content& content,
+              Orientation rotation=N);
     Map(int height, int width);
     Map();
 //    ~Map();

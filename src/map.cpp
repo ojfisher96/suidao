@@ -38,7 +38,8 @@ Map::Map(int height, int width) {
 }
 
 // Test draw function
-void Map::Draw(SDL_Surface *screen, Content &content) {
+void Map::Draw(SDL_Surface *screen, Content &content,
+               Orientation rotation) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
