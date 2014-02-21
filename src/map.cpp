@@ -51,6 +51,7 @@ void Map::Draw(SDL_Surface *screen, Content &content,
             const Segment& cur_segment = columns[x][y].get_segment(0);
             SDL_Rect tile_sheet_fragment;
             SDL_Rect offset;
+            // Top tile
             tile_sheet_fragment.x =
                     TILE_SIZE*cur_segment.tilt_type.orientation;
             tile_sheet_fragment.y =
@@ -63,6 +64,23 @@ void Map::Draw(SDL_Surface *screen, Content &content,
                 content.GetGraphic("content/graphics/tiles.png"),
                                    &tile_sheet_fragment,
                                    screen, &offset);
+
+            // Foundation
+            for (int z = cur_segment.top; z > cur_segment.bottom; z--) {
+                offset.y += TILE_SIZE/4;
+                tile_sheet_fragment.x = TILE_SIZE;
+                tile_sheet_fragment.y = 0;
+                SDL_BlitSurface(
+                    content.GetGraphic("content/graphics/foundation.png"),
+                    &tile_sheet_fragment,
+                    screen, &offset);
+                tile_sheet_fragment.x = 0;
+                tile_sheet_fragment.y = 0;
+                SDL_BlitSurface(
+                    content.GetGraphic("content/graphics/foundation.png"),
+                    &tile_sheet_fragment,
+                    screen, &offset);
+            }
         }
     }
 }
