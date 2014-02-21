@@ -5,6 +5,8 @@
 #include <cmath>
 #include <cstdio>
 
+#define TILE_SIZE 64
+
 namespace Suidao {
 //
 // Map function implementations
@@ -43,20 +45,20 @@ void Map::Draw(SDL_Surface *screen, Content &content,
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
-            int transformed_x = (x + y) * 32;
-            int transformed_y = ((-x + y) + 15) * 16;
+            int transformed_x = (x + y) * TILE_SIZE/2;
+            int transformed_y = ((-x + y) + 15) * TILE_SIZE/4;
             
             const Segment& cur_segment = columns[x][y].get_segment(0);
             SDL_Rect tile_sheet_fragment;
             SDL_Rect offset;
             tile_sheet_fragment.x =
-                    64*cur_segment.tilt_type.orientation;
+                    TILE_SIZE*cur_segment.tilt_type.orientation;
             tile_sheet_fragment.y =
-                    64*cur_segment.tilt_type.style;
-            tile_sheet_fragment.w = 64;
-            tile_sheet_fragment.h = 64;
+                    TILE_SIZE*cur_segment.tilt_type.style;
+            tile_sheet_fragment.w = TILE_SIZE;
+            tile_sheet_fragment.h = TILE_SIZE;
             offset.x = transformed_x;
-            offset.y = transformed_y - cur_segment.top*16;
+            offset.y = transformed_y - cur_segment.top*TILE_SIZE/4;
             SDL_BlitSurface(
                 content.GetGraphic("content/graphics/tiles.png"),
                                    &tile_sheet_fragment,
