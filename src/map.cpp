@@ -61,23 +61,23 @@ void Map::Draw(SDL_Surface *screen, Content &content,
             offset.x = transformed_x;
             offset.y = transformed_y - cur_segment.top*TILE_SIZE/4;
             SDL_BlitSurface(
-                content.GetGraphic("content/graphics/tiles.png"),
+                content.GetGraphic("graphics/tiles.png"),
                                    &tile_sheet_fragment,
                                    screen, &offset);
-
+            
             // Foundation
             for (int z = cur_segment.top; z > cur_segment.bottom; z--) {
                 offset.y += TILE_SIZE/4;
                 tile_sheet_fragment.x = TILE_SIZE;
                 tile_sheet_fragment.y = 0;
                 SDL_BlitSurface(
-                    content.GetGraphic("content/graphics/foundation.png"),
+                    content.GetGraphic("graphics/foundation.png"),
                     &tile_sheet_fragment,
                     screen, &offset);
                 tile_sheet_fragment.x = 0;
                 tile_sheet_fragment.y = 0;
                 SDL_BlitSurface(
-                    content.GetGraphic("content/graphics/foundation.png"),
+                    content.GetGraphic("graphics/foundation.png"),
                     &tile_sheet_fragment,
                     screen, &offset);
             }

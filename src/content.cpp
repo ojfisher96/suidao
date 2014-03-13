@@ -15,7 +15,7 @@ void Content::LoadContent(std::string folder,
     // i.e. the first folder loaded is default, and therefore
     // is accessed from some default folder in the Content
     // hierarchy, rather than from the actual folder name.
-    _LoadFolder(folder, format);
+    _LoadFolder(folder, "", format);
 }
 
 SDL_Surface* Content::GetGraphic(std::string path) {
@@ -30,49 +30,53 @@ Mix_Music* Content::GetMusic(std::string path) {
     return _musics[path];
 }
 
-void Content::_LoadFolder(std::string path,
+void Content::_LoadFolder(std::string root, std::string path,
                           SDL_PixelFormat* format) {
     DIR *dir;
     dirent *ent;
-    dir = opendir(path.c_str());
+    dir = opendir((root + path).c_str());
     if (dir != NULL) {
+        if (*(root.end()-1) != '/') {
+            root = root + "/";
+        }
         while ((ent = readdir (dir)) != NULL) {
-            std::string full_path;
+            std::string file_path;
             if (ent->d_name[0] == '.') {
                 continue;
             }
-            if (*(path.end()-1) != '/') {
-                full_path = path + "/" + std::string(ent->d_name);
+            if (path.size() != 0 && *(path.end()-1) != '/') {
+                file_path = path + "/" + std::string(ent->d_name);
             } else {
-                full_path = path + std::string(ent->d_name);
+                file_path = path + std::string(ent->d_name);
             }
             
-
             SDL_Surface* loaded_image;
             
 #ifdef _WIN32
             if (ent->d_type == DT_REG) {
 #else
             struct stat file_attributes;
-            stat(full_path.c_str(), &file_attributes);
+            stat((root + file_path).c_str(), &file_attributes);
             if (S_ISREG(file_attributes.st_mode)) {
 #endif
                 switch (_FileType(ent->d_name)) {
                     case GRAPHIC:
-                        loaded_image = IMG_Load(full_path.c_str());
+                        loaded_image =
+                                IMG_Load((root + file_path).c_str());
+                        
                         if (loaded_image != NULL) {
-                            _graphics[full_path] =
+                            _graphics[file_path] =
                                     SDL_ConvertSurface(loaded_image,
                                                        format, 0);
                         }
                         break;
                     case SOUND:
-                        _sounds[full_path] =
-                                Mix_LoadWAV(full_path.c_str());
+                        _sounds[file_path] =
+                                Mix_LoadWAV((root + file_path).c_str());
                         break;
                     case MUSIC:
-                        _musics[full_path] =
-                                Mix_LoadMUS(full_path.c_str());
+                        _musics[file_path] =
+                                Mix_LoadMUS((root + file_path).c_str());
                             break;
                     default:
                         break;
@@ -82,7 +86,7 @@ void Content::_LoadFolder(std::string path,
 #else
             } else if (S_ISDIR(file_attributes.st_mode)) {
 #endif
-                _LoadFolder(std::string(full_path), format);
+                _LoadFolder(root, std::string(file_path), format);
             }
         }
     }
