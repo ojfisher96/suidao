@@ -18,16 +18,31 @@ void Content::LoadContent(std::string folder,
     _LoadFolder(folder, "", format);
 }
 
-SDL_Surface* Content::GetGraphic(std::string path) {
-    return _graphics[path];
+SDL_Surface* Content::GetGraphic(std::string path) const {
+    auto iterator = _graphics.find(path);
+    SDL_Surface* asset = NULL;
+    if (iterator != _graphics.end()) {
+        asset = iterator->second;
+    }
+    return asset;
 }
 
-Mix_Chunk* Content::GetSound(std::string path) {
-    return _sounds[path];
+Mix_Chunk* Content::GetSound(std::string path) const {
+    auto iterator = _sounds.find(path);
+    Mix_Chunk* asset = NULL;
+    if (iterator != _sounds.end()) {
+        asset = iterator->second;
+    }
+    return asset;
 }
 
-Mix_Music* Content::GetMusic(std::string path) {
-    return _musics[path];
+Mix_Music* Content::GetMusic(std::string path) const {
+    auto iterator = _musics.find(path);
+    Mix_Music* asset = NULL;
+    if (iterator != _musics.end()) {
+        asset = iterator->second;
+    }
+    return asset;
 }
 
 void Content::_LoadFolder(std::string root, std::string path,

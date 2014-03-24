@@ -18,9 +18,9 @@ class Content {
     ContentType _FileType(std::string path);
   public:
     void LoadContent(std::string folder, SDL_PixelFormat* format);
-    SDL_Surface* GetGraphic(std::string path);
-    Mix_Chunk* GetSound(std::string path);
-    Mix_Music* GetMusic(std::string path);
+    SDL_Surface* GetGraphic(std::string path) const;
+    Mix_Chunk* GetSound(std::string path) const;
+    Mix_Music* GetMusic(std::string path) const;
 };
 
 }
