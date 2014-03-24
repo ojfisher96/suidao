@@ -40,7 +40,7 @@ Map::Map(int height, int width) {
 }
 
 // Test draw function
-void Map::Draw(SDL_Surface *screen, Content &content,
+void Map::Draw(SDL_Surface *screen, const Content &content,
                Orientation rotation) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
@@ -52,20 +52,14 @@ void Map::Draw(SDL_Surface *screen, Content &content,
             SDL_Rect tile_sheet_fragment;
             SDL_Rect offset;
             // Top tile
-            tile_sheet_fragment.x =
-                    TILE_SIZE*cur_segment.tilt_type.orientation;
-            tile_sheet_fragment.y =
-                    TILE_SIZE*cur_segment.tilt_type.style;
-            tile_sheet_fragment.w = TILE_SIZE;
-            tile_sheet_fragment.h = TILE_SIZE;
-            offset.x = transformed_x;
-            offset.y = transformed_y - cur_segment.top*TILE_SIZE/4;
-            SDL_BlitSurface(
-                content.GetGraphic("graphics/tiles.png"),
-                                   &tile_sheet_fragment,
-                                   screen, &offset);
+            _DrawTile(screen, content, cur_segment,
+                      transformed_x, transformed_y);
             
             // Foundation
+            offset.x = transformed_x;
+            offset.y = transformed_y - cur_segment.top*TILE_SIZE/4;
+            tile_sheet_fragment.w = TILE_SIZE;
+            tile_sheet_fragment.h = TILE_SIZE;
             for (int z = cur_segment.top; z > cur_segment.bottom; z--) {
                 offset.y += TILE_SIZE/4;
                 tile_sheet_fragment.x = TILE_SIZE;
@@ -85,6 +79,27 @@ void Map::Draw(SDL_Surface *screen, Content &content,
     }
 }
 
+void Map::_DrawTile(SDL_Surface *screen, const Content &content,
+                    const Segment &segment,
+                    int transformed_x, int transformed_y) {
+    SDL_Rect tile_sheet_fragment;
+    SDL_Rect offset;
+    tile_sheet_fragment.x = TILE_SIZE*segment.tilt_type.orientation;
+    tile_sheet_fragment.y = TILE_SIZE*segment.tilt_type.style;
+    tile_sheet_fragment.w = TILE_SIZE;
+    tile_sheet_fragment.h = TILE_SIZE;
+    offset.x = transformed_x;
+    offset.y = transformed_y - segment.top*TILE_SIZE/4;
+    SDL_BlitSurface(content.GetGraphic("graphics/tiles.png"),
+                    &tile_sheet_fragment, screen, &offset);
+}
+
+void Map::_DrawFoundation(SDL_Surface *screen, const Content &content,
+                          const Segment &segment,
+                          int transformed_x, int transformed_y) {
+    
+}
+    
 // Default constructor just to appease the compiler
 Map::Map() {
     this->height = 0;

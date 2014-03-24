@@ -48,9 +48,15 @@ public:
 class Map {
     int height, width;
     Column **columns;
+    void _DrawTile(SDL_Surface *screen, const Content &content,
+                   const Segment &segment,
+                   int transformed_x, int transformed_y);
+    void _DrawFoundation(SDL_Surface *screen, const Content &content,
+                         const Segment &segment,
+                         int transformed_x, int transformed_y);
 public:
     // Test draw function
-    void Draw(SDL_Surface *screen, Content& content,
+    void Draw(SDL_Surface *screen, const Content& content,
               Orientation rotation=N);
     Map(int height, int width);
     Map();
