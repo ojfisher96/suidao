@@ -49,32 +49,13 @@ void Map::Draw(SDL_Surface *screen, const Content &content,
             int transformed_y = ((-x + y) + 15) * TILE_SIZE/4;
             
             const Segment& cur_segment = columns[x][y].GetSegment(0);
-            SDL_Rect tile_sheet_fragment;
-            SDL_Rect offset;
             // Top tile
             _DrawTile(screen, content, cur_segment,
                       transformed_x, transformed_y);
             
             // Foundation
-            offset.x = transformed_x;
-            offset.y = transformed_y - cur_segment.top*TILE_SIZE/4;
-            tile_sheet_fragment.w = TILE_SIZE;
-            tile_sheet_fragment.h = TILE_SIZE;
-            for (int z = cur_segment.top; z > cur_segment.bottom; z--) {
-                offset.y += TILE_SIZE/4;
-                tile_sheet_fragment.x = TILE_SIZE;
-                tile_sheet_fragment.y = 0;
-                SDL_BlitSurface(
-                    content.GetGraphic("graphics/foundation.png"),
-                    &tile_sheet_fragment,
-                    screen, &offset);
-                tile_sheet_fragment.x = 0;
-                tile_sheet_fragment.y = 0;
-                SDL_BlitSurface(
-                    content.GetGraphic("graphics/foundation.png"),
-                    &tile_sheet_fragment,
-                    screen, &offset);
-            }
+            _DrawFoundation(screen, content, cur_segment,
+                            transformed_x, transformed_y);
         }
     }
 }
@@ -90,6 +71,7 @@ void Map::_DrawTile(SDL_Surface *screen, const Content &content,
     tile_sheet_fragment.h = TILE_SIZE;
     offset.x = transformed_x;
     offset.y = transformed_y - segment.top*TILE_SIZE/4;
+    
     SDL_BlitSurface(content.GetGraphic("graphics/tiles.png"),
                     &tile_sheet_fragment, screen, &offset);
 }
@@ -97,7 +79,23 @@ void Map::_DrawTile(SDL_Surface *screen, const Content &content,
 void Map::_DrawFoundation(SDL_Surface *screen, const Content &content,
                           const Segment &segment,
                           int transformed_x, int transformed_y) {
-    
+    SDL_Rect tile_sheet_fragment;
+    SDL_Rect offset;
+    offset.x = transformed_x;
+    offset.y = transformed_y - segment.top*TILE_SIZE/4;
+    tile_sheet_fragment.w = TILE_SIZE;
+    tile_sheet_fragment.h = TILE_SIZE;
+    for (int z = segment.top; z > segment.bottom; z--) {
+        offset.y += TILE_SIZE/4;
+        tile_sheet_fragment.x = TILE_SIZE;
+        tile_sheet_fragment.y = 0;
+        SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
+            &tile_sheet_fragment, screen, &offset);
+        tile_sheet_fragment.x = 0;
+        tile_sheet_fragment.y = 0;
+        SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
+            &tile_sheet_fragment, screen, &offset);
+    }
 }
     
 // Default constructor just to appease the compiler
