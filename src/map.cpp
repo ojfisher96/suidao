@@ -25,13 +25,13 @@ Map::Map(int height, int width) {
                 TiltType tilt;
                 tilt.style = SIDE_UP;
                 tilt.orientation = W;
-                this->columns[x][y].retilt(tilt);
+                this->columns[x][y].Retilt(tilt);
             } else if (y > height/2) {
                 this->columns[x][y] = y - height/2 - 1;
                 TiltType tilt;
                 tilt.style = SIDE_UP;
                 tilt.orientation = E;
-                this->columns[x][y].retilt(tilt);
+                this->columns[x][y].Retilt(tilt);
             } else {
                 this->columns[x][y] = 0;
             }
@@ -48,7 +48,7 @@ void Map::Draw(SDL_Surface *screen, Content &content,
             int transformed_x = (x + y) * TILE_SIZE/2;
             int transformed_y = ((-x + y) + 15) * TILE_SIZE/4;
             
-            const Segment& cur_segment = columns[x][y].get_segment(0);
+            const Segment& cur_segment = columns[x][y].GetSegment(0);
             SDL_Rect tile_sheet_fragment;
             SDL_Rect offset;
             // Top tile
