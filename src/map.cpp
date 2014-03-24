@@ -47,9 +47,10 @@ void Map::Draw(SDL_Surface *screen, const Content &content,
         for (int y = 0; y < height; y++) {
             int transformed_x = (x + y) * TILE_SIZE/2;
             int transformed_y = ((-x + y) + 15) * TILE_SIZE/4;
-            
+
+            // Only draws top segment for now.
             const Segment& cur_segment = columns[x][y].GetSegment(0);
-            // Top tile
+            // Tile
             _DrawTile(screen, content, cur_segment,
                       transformed_x, transformed_y);
             
