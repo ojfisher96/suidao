@@ -115,19 +115,19 @@ Column::Column(int height, RockType rock_type) {
     this->segments.push_back(Segment(height));
 }
 
-void Column::make_cut(int top, int bottom, TiltType tilt_type) {
+void Column::MakeCut(int top, int bottom, TiltType tilt_type) {
     // TODO: binary search for segments to delete/trim.
 }
 
-void Column::retilt(TiltType tilt_type) {
+void Column::Retilt(TiltType tilt_type) {
     this->segments[0].tilt_type = tilt_type;
 }
 
-int Column::get_num_segments() {
+int Column::GetNumSegments() {
     return this->segments.size();
 }
 
-const Segment& Column::get_segment(int segment_num) {
+const Segment& Column::GetSegment(int segment_num) {
     return this->segments[segment_num];
 }
 

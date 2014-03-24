@@ -36,11 +36,11 @@ class Column {
     // a sorted vector does fine.
     std::vector<Segment> segments;
 public:
-    int get_num_segments();
-    const Segment& get_segment(int segment_num);
-    void make_cut(int top, int bottom, TiltType tilt_type=TiltType());
-    void bore(TiltType tilt_type);
-    void retilt(TiltType tilt_type);
+    int GetNumSegments();
+    const Segment& GetSegment(int segment_num);
+    void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
+    void Bore(TiltType tilt_type);
+    void Retilt(TiltType tilt_type);
     Column();
     Column(int height, int rock_type=0);
 };
