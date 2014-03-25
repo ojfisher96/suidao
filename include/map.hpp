@@ -6,9 +6,11 @@
 
 namespace Suidao {
 
-enum Orientation {
+enum Direction {
     N, E, S, W,
 };
+typedef Direction Orientation;
+
 enum TiltStyle {
     FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, DIAGONAL, // V_DOWN,
 };
@@ -45,6 +47,19 @@ public:
     Column(int height, int rock_type=0);
 };
 
+namespace {
+const int CORNER_HEIGHTS[][4] =
+{
+    {0,0,0,0},
+    {1,0,0,0},
+    {1,1,0,0},
+    {1,0,1,0},
+    {1,1,1,0},
+    {2,1,0,1},
+};
+enum FoundationType { BLOCK, TILT_AWAY, TILT_TOWARDS };
+}
+
 class Map {
     int height, width;
     Column **columns;
@@ -54,6 +69,14 @@ class Map {
     void _DrawFoundation(SDL_Surface *screen, const Content &content,
                          const Segment &segment,
                          int transformed_x, int transformed_y);
+    void _DrawTopFoundation(SDL_Surface *screen, const Content &content,
+                            const Segment &segment,
+                            int transformed_x, int transformed_y);
+    
+    // Returns height of a corner relative to the base of the tile.
+    // 'corner' here is relative to the orientation of the tile.
+    int _GetCornerHeight(TiltType tilt_type, Direction corner);
+    
 public:
     // Test draw function
     void Draw(SDL_Surface *screen, const Content& content,
