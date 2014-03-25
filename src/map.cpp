@@ -50,14 +50,15 @@ void Map::Draw(SDL_Surface *screen, const Content &content,
 
             // Only draws top segment for now.
             const Segment& cur_segment = columns[x][y].GetSegment(0);
-            _DrawTile(screen, content, cur_segment,
-                      transformed_x, transformed_y);
-            
             _DrawFoundation(screen, content, cur_segment,
                             transformed_x, transformed_y);
 
             _DrawTopFoundation(screen, content, cur_segment,
                                transformed_x, transformed_y);
+
+            _DrawTile(screen, content, cur_segment,
+                      transformed_x, transformed_y);
+            
         }
     }
 }
@@ -140,7 +141,7 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
                             &tile_sheet_fragment, screen, &offset);
         }
         if (_GetCornerHeight(segment.tilt_type,
-                             Direction(int(E) + side*2)) > 0) {
+                             Direction(int(E) + side*2)) == 2) {
             tile_sheet_fragment.x = TILE_SIZE*side;
             tile_sheet_fragment.y = TILE_SIZE*TILT_AWAY;
             SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
