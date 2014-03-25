@@ -116,17 +116,17 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
             if (_GetCornerHeight(segment.tilt_type,
                                  Direction(int(E) + side*2)) > 0) {
                 tile_sheet_fragment.x = TILE_SIZE*side;
-                tile_sheet_fragment.y = BLOCK;
+                tile_sheet_fragment.y = TILE_SIZE*BLOCK;
             } else {
                 tile_sheet_fragment.x = TILE_SIZE*side;
-                tile_sheet_fragment.y = TILT_TOWARDS;
+                tile_sheet_fragment.y = TILE_SIZE*TILT_TOWARDS;
             }
             SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
                             &tile_sheet_fragment, screen, &offset);
         } else if (_GetCornerHeight(segment.tilt_type,
                                     Direction(int(E) + side*2)) > 0) {
             tile_sheet_fragment.x = TILE_SIZE*side;
-            tile_sheet_fragment.y = TILT_AWAY;
+            tile_sheet_fragment.y = TILE_SIZE*TILT_AWAY;
             SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
                             &tile_sheet_fragment, screen, &offset);
         }
@@ -135,14 +135,14 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
         offset.y -= TILE_SIZE/4;
         if (_GetCornerHeight(segment.tilt_type, S) == 2) {
             tile_sheet_fragment.x = TILE_SIZE*side;
-            tile_sheet_fragment.y = TILT_TOWARDS;
+            tile_sheet_fragment.y = TILE_SIZE*TILT_TOWARDS;
             SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
                             &tile_sheet_fragment, screen, &offset);
         }
         if (_GetCornerHeight(segment.tilt_type,
                              Direction(int(E) + side*2)) > 0) {
             tile_sheet_fragment.x = TILE_SIZE*side;
-            tile_sheet_fragment.y = TILT_AWAY;
+            tile_sheet_fragment.y = TILE_SIZE*TILT_AWAY;
             SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
                             &tile_sheet_fragment, screen, &offset);
         }
