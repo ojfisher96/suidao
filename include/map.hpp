@@ -15,6 +15,8 @@ enum TiltStyle {
     FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, DIAGONAL, // V_DOWN,
 };
 
+const int NUM_TILT_STYLES = 6;
+
 struct TiltType {
     Orientation orientation;
     TiltStyle style;
@@ -65,7 +67,8 @@ class Map {
     Column **columns;
     void _DrawTile(SDL_Surface *screen, const Content &content,
                    const Segment &segment,
-                   int transformed_x, int transformed_y);
+                   int transformed_x, int transformed_y,
+                   bool selected);
     void _DrawFoundation(SDL_Surface *screen, const Content &content,
                          const Segment &segment,
                          int transformed_x, int transformed_y);

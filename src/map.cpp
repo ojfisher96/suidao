@@ -57,15 +57,15 @@ void Map::Draw(SDL_Surface *screen, const Content &content,
                                transformed_x, transformed_y);
 
             _DrawTile(screen, content, cur_segment,
-                      transformed_x, transformed_y);
-            
+                      transformed_x, transformed_y, false);
         }
     }
 }
 
 void Map::_DrawTile(SDL_Surface *screen, const Content &content,
                     const Segment &segment,
-                    int transformed_x, int transformed_y) {
+                    int transformed_x, int transformed_y,
+                    bool selected) {
     SDL_Rect tile_sheet_fragment;
     SDL_Rect offset;
     tile_sheet_fragment.x = TILE_SIZE*segment.tilt_type.orientation;
@@ -74,6 +74,10 @@ void Map::_DrawTile(SDL_Surface *screen, const Content &content,
     tile_sheet_fragment.h = TILE_SIZE;
     offset.x = transformed_x;
     offset.y = transformed_y - segment.top*TILE_SIZE/4;
+
+    if (!selected) {
+        tile_sheet_fragment.y += TILE_SIZE * NUM_TILT_STYLES;
+    }
     
     SDL_BlitSurface(content.GetGraphic("graphics/tiles.png"),
                     &tile_sheet_fragment, screen, &offset);
