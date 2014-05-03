@@ -4,6 +4,7 @@
 #include "suidao.hpp"
 #include "map.hpp"
 #include "content.hpp"
+#include "coordinate.hpp"
 
 namespace Suidao {
 
@@ -44,7 +45,7 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-    map.Draw(screen, content);
+    map.Draw(screen, content, Coord2<int>(0,240));
     SDL_UpdateWindowSurface(window);
 }
 

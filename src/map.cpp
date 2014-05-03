@@ -4,6 +4,7 @@
 #include "SDL2/SDL_image.h"
 #include <cmath>
 #include <cstdio>
+#include "coordinate.hpp"
 
 #define TILE_SIZE 64
 
@@ -41,12 +42,14 @@ Map::Map(int height, int width) {
 
 // Test draw function
 void Map::Draw(SDL_Surface *screen, const Content &content,
-               Orientation rotation) {
+               Coord2<int> position, Orientation rotation) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
-            int transformed_x = (x + y) * TILE_SIZE/2;
-            int transformed_y = ((-x + y)) * TILE_SIZE/4;
+            int transformed_x = (x + y) * TILE_SIZE/2 +
+                position.x;
+            int transformed_y = ((-x + y)) * TILE_SIZE/4 +
+                position.y;
 
             // Only draws top segment for now.
             const Segment& cur_segment = columns[x][y].GetSegment(0);

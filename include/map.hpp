@@ -2,7 +2,9 @@
 #define MAP_HPP
 #include <vector>
 #include "SDL2/SDL.h"
+#include "coordinate.hpp"
 #include "content.hpp"
+
 
 namespace Suidao {
 
@@ -83,6 +85,7 @@ class Map {
 public:
     // Test draw function
     void Draw(SDL_Surface *screen, const Content& content,
+              Coord2<int> position=Coord2<int>(),
               Orientation rotation=N);
     Map(int height, int width);
     Map();
