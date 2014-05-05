@@ -48,16 +48,16 @@ void Game::Input() {
     
     const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
     if (keyboard_state[SDL_SCANCODE_UP]) {
-        map_draw_position.y += 1;
+        map_draw_position.y += 10;
     }
     if (keyboard_state[SDL_SCANCODE_RIGHT]) {
-        map_draw_position.x -= 1;
+        map_draw_position.x -= 10;
     }
     if (keyboard_state[SDL_SCANCODE_DOWN]) {
-        map_draw_position.y -= 1;
+        map_draw_position.y -= 10;
     }
     if (keyboard_state[SDL_SCANCODE_LEFT]) {
-        map_draw_position.x += 1;
+        map_draw_position.x += 10;
     }
 }
 
