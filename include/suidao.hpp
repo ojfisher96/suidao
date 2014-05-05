@@ -2,6 +2,7 @@
 #define SUIDAO_HPP
 
 #include "map.hpp"
+#include "coordinate.hpp"
 #include "SDL2/SDL.h"
 
 namespace Suidao {
@@ -30,6 +31,7 @@ class Game {
     
     Map map;
     Content content;
+    Coord2<int> map_draw_position;
 
     SDL_Window* window;
     SDL_Surface* screen;
