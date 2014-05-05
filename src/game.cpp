@@ -19,13 +19,19 @@ void Game::Init() {
                                SDL_WINDOWPOS_CENTERED,
                                SCREEN_WIDTH, SCREEN_HEIGHT,
                                SDL_WINDOW_SHOWN);
-    screen = SDL_GetWindowSurface(window);
+    
+    renderer = SDL_CreateRenderer(window, -1, 0);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    //screen = SDL_GetWindowSurface(window);
+
+    IMG_Init(IMG_INIT_PNG);
+    
     map = Map(10,10);
     map_draw_position = Coord2<int>(0,240);
 }
 
 void Game::LoadContent() {
-    content.LoadContent("content", screen->format);
+    content.LoadContent("content", renderer);
 }
 
 void Game::Input() {
@@ -39,7 +45,7 @@ void Game::Input() {
             }
         }
     }
-
+    
     const Uint8 *state = SDL_GetKeyboardState(NULL);
     if (state[SDL_SCANCODE_UP]) {
         map_draw_position.y -= 1;
@@ -61,8 +67,9 @@ void Game::Update() {
 }
 
 void Game::Draw() {
-    map.Draw(screen, content, map_draw_position);
-    SDL_UpdateWindowSurface(window);
+    SDL_RenderClear(renderer);
+    map.Draw(renderer, content, map_draw_position);
+    SDL_RenderPresent(renderer);
 }
 
 void Game::CleanUp() {

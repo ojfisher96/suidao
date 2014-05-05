@@ -10,17 +10,17 @@
 namespace Suidao {
 
 void Content::LoadContent(std::string folder,
-                          SDL_PixelFormat* format) {
+                          SDL_Renderer* renderer) {
     // TODO: Write code to deal with wrapping default content.
     // i.e. the first folder loaded is default, and therefore
     // is accessed from some default folder in the Content
     // hierarchy, rather than from the actual folder name.
-    _LoadFolder(folder, "", format);
+    _LoadFolder(folder, "", renderer);
 }
 
-SDL_Surface* Content::GetGraphic(std::string path) const {
+SDL_Texture* Content::GetGraphic(std::string path) const {
     auto iterator = _graphics.find(path);
-    SDL_Surface* asset = NULL;
+    SDL_Texture* asset = NULL;
     if (iterator != _graphics.end()) {
         asset = iterator->second;
     }
@@ -46,7 +46,7 @@ Mix_Music* Content::GetMusic(std::string path) const {
 }
 
 void Content::_LoadFolder(std::string root, std::string path,
-                          SDL_PixelFormat* format) {
+                          SDL_Renderer* renderer) {
     DIR *dir;
     dirent *ent;
     dir = opendir((root + path).c_str());
@@ -81,9 +81,10 @@ void Content::_LoadFolder(std::string root, std::string path,
                         
                         if (loaded_image != NULL) {
                             _graphics[file_path] =
-                                    SDL_ConvertSurface(loaded_image,
-                                                       format, 0);
+                                SDL_CreateTextureFromSurface(renderer,
+                                                             loaded_image);
                         }
+                        SDL_FreeSurface(loaded_image);
                         break;
                     case SOUND:
                         _sounds[file_path] =
@@ -101,7 +102,7 @@ void Content::_LoadFolder(std::string root, std::string path,
 #else
             } else if (S_ISDIR(file_attributes.st_mode)) {
 #endif
-                _LoadFolder(root, std::string(file_path), format);
+                _LoadFolder(root, std::string(file_path), renderer);
             }
         }
     }

@@ -32,9 +32,10 @@ class Game {
     Map map;
     Content content;
     Coord2<int> map_draw_position;
-
+    
     SDL_Window* window;
     SDL_Surface* screen;
+    SDL_Renderer* renderer;
     
     void Init();
     void LoadContent();

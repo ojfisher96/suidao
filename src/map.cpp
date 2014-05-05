@@ -41,7 +41,7 @@ Map::Map(int height, int width) {
 }
 
 // Test draw function
-void Map::Draw(SDL_Surface *screen, const Content &content,
+void Map::Draw(SDL_Renderer *renderer, const Content &content,
                Coord2<int> position, Orientation rotation) {
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
@@ -53,19 +53,20 @@ void Map::Draw(SDL_Surface *screen, const Content &content,
 
             // Only draws top segment for now.
             const Segment& cur_segment = columns[x][y].GetSegment(0);
-            _DrawFoundation(screen, content, cur_segment,
+            
+            _DrawFoundation(renderer, content, cur_segment,
                             transformed_x, transformed_y);
 
-            _DrawTopFoundation(screen, content, cur_segment,
+            _DrawTopFoundation(renderer, content, cur_segment,
                                transformed_x, transformed_y);
 
-            _DrawTile(screen, content, cur_segment,
+            _DrawTile(renderer, content, cur_segment,
                       transformed_x, transformed_y, false);
         }
     }
 }
 
-void Map::_DrawTile(SDL_Surface *screen, const Content &content,
+void Map::_DrawTile(SDL_Renderer *renderer, const Content &content,
                     const Segment &segment,
                     int transformed_x, int transformed_y,
                     bool selected) {
@@ -77,43 +78,44 @@ void Map::_DrawTile(SDL_Surface *screen, const Content &content,
     tile_sheet_fragment.h = TILE_SIZE;
     offset.x = transformed_x;
     offset.y = transformed_y - segment.top*TILE_SIZE/4;
+    offset.w = TILE_SIZE;
+    offset.h = TILE_SIZE;
 
     if (!selected) {
         tile_sheet_fragment.y += TILE_SIZE * NUM_TILT_STYLES;
     }
-    
-    SDL_BlitSurface(content.GetGraphic("graphics/tiles.png"),
-                    &tile_sheet_fragment, screen, &offset);
+
+    SDL_RenderCopy(renderer, content.GetGraphic("graphics/tiles.png"),
+                   &tile_sheet_fragment, &offset);
 }
 
-void Map::_DrawFoundation(SDL_Surface *screen, const Content &content,
+void Map::_DrawFoundation(SDL_Renderer *renderer, const Content &content,
                           const Segment &segment,
                           int transformed_x, int transformed_y) {
     SDL_Rect tile_sheet_fragment;
     SDL_Rect offset;
     offset.x = transformed_x;
     offset.y = transformed_y - segment.top*TILE_SIZE/4;
+    offset.w = TILE_SIZE;
+    offset.h = TILE_SIZE;
     tile_sheet_fragment.w = TILE_SIZE;
     tile_sheet_fragment.h = TILE_SIZE;
     for (int z = segment.top; z > segment.bottom; z--) {
-        SDL_Rect passed_offset;
         offset.y += 16;
         
         tile_sheet_fragment.x = TILE_SIZE;
         tile_sheet_fragment.y = BLOCK;
-        passed_offset = offset;
-        SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                        &tile_sheet_fragment, screen, &passed_offset);
+        SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                       &tile_sheet_fragment, &offset);
         
         tile_sheet_fragment.x = 0;
         tile_sheet_fragment.y = BLOCK;
-        passed_offset = offset;
-        SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                        &tile_sheet_fragment, screen, &passed_offset);
+        SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                       &tile_sheet_fragment, &offset);
     }
 }
 
-void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
+void Map::_DrawTopFoundation(SDL_Renderer *renderer, const Content &content,
                              const Segment &segment,
                              int transformed_x, int transformed_y) {
     SDL_Rect tile_sheet_fragment;
@@ -122,11 +124,11 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
         
         offset.x = transformed_x;
         offset.y = transformed_y - segment.top*TILE_SIZE/4;
+        offset.w = TILE_SIZE;
+        offset.h = TILE_SIZE;
         tile_sheet_fragment.w = TILE_SIZE;
         tile_sheet_fragment.h = TILE_SIZE;
 
-        SDL_Rect passed_offset;
-        
         // First layer
         if (_GetCornerHeight(segment.tilt_type, S) > 0) {
             if (_GetCornerHeight(segment.tilt_type,
@@ -137,16 +139,14 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
                 tile_sheet_fragment.x = TILE_SIZE*side;
                 tile_sheet_fragment.y = TILE_SIZE*TILT_TOWARDS;
             }
-            passed_offset = offset;
-            SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                            &tile_sheet_fragment, screen, &passed_offset);
+            SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                           &tile_sheet_fragment, &offset);
         } else if (_GetCornerHeight(segment.tilt_type,
                                     Direction(int(E) + side*2)) > 0) {
             tile_sheet_fragment.x = TILE_SIZE*side;
             tile_sheet_fragment.y = TILE_SIZE*TILT_AWAY;
-            passed_offset = offset;
-            SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                            &tile_sheet_fragment, screen, &passed_offset);
+            SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                           &tile_sheet_fragment, &offset);
         }
         
         // Second layer
@@ -154,17 +154,15 @@ void Map::_DrawTopFoundation(SDL_Surface *screen, const Content &content,
         if (_GetCornerHeight(segment.tilt_type, S) == 2) {
             tile_sheet_fragment.x = TILE_SIZE*side;
             tile_sheet_fragment.y = TILE_SIZE*TILT_TOWARDS;
-            passed_offset = offset;
-            SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                            &tile_sheet_fragment, screen, &passed_offset);
+            SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                           &tile_sheet_fragment, &offset);
         }
         if (_GetCornerHeight(segment.tilt_type,
                              Direction(int(E) + side*2)) == 2) {
             tile_sheet_fragment.x = TILE_SIZE*side;
             tile_sheet_fragment.y = TILE_SIZE*TILT_AWAY;
-            passed_offset = offset;
-            SDL_BlitSurface(content.GetGraphic("graphics/foundation.png"),
-                            &tile_sheet_fragment, screen, &passed_offset);
+            SDL_RenderCopy(renderer, content.GetGraphic("graphics/foundation.png"),
+                           &tile_sheet_fragment, &offset);
         }
     }
     
