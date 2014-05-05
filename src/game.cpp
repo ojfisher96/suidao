@@ -33,6 +33,10 @@ void Game::Input() {
     while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
             Exit();
+        } else if (event.type == SDL_KEYDOWN) {
+            if (event.key.keysym.sym == SDLK_ESCAPE) {
+                Exit();
+            }
         }
     }
 
