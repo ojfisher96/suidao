@@ -22,7 +22,6 @@ void Game::Init() {
     
     renderer = SDL_CreateRenderer(window, -1, 0);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    //screen = SDL_GetWindowSurface(window);
 
     IMG_Init(IMG_INIT_PNG);
     
