@@ -46,24 +46,33 @@ void Map::Draw(SDL_Renderer *renderer, const Content &content,
     // Starting at other side is a hack to get draw order correct.
     for (int x = width-1; x >= 0; x--) {
         for (int y = 0; y < height; y++) {
-            int transformed_x = (x + y) * TILE_SIZE/2 +
-                position.x;
-            int transformed_y = ((-x + y)) * TILE_SIZE/4 +
-                position.y;
-
-            // Only draws top segment for now.
-            const Segment& cur_segment = columns[x][y].GetSegment(0);
-            
-            _DrawFoundation(renderer, content, cur_segment,
-                            transformed_x, transformed_y);
-
-            _DrawTopFoundation(renderer, content, cur_segment,
-                               transformed_x, transformed_y);
-
-            _DrawTile(renderer, content, cur_segment,
-                      transformed_x, transformed_y, false);
+            DrawColumn(renderer, content, Coord2<int>(x,y),
+                       position, rotation);
         }
     }
+}
+
+void Map::DrawColumn(SDL_Renderer *renderer, const Content &content,
+                     Coord2<int> column,
+                     Coord2<int> position, Orientation rotation) {
+    
+    int transformed_x = (column.x + column.y) * TILE_SIZE/2 +
+                        position.x;
+    int transformed_y = ((-column.x + column.y)) * TILE_SIZE/4 +
+                        position.y;
+    
+    // Only draws top segment for now.
+    const Segment& cur_segment =
+            columns[column.x][column.y].GetSegment(0);
+    
+    _DrawFoundation(renderer, content, cur_segment,
+                    transformed_x, transformed_y);
+    
+    _DrawTopFoundation(renderer, content, cur_segment,
+                       transformed_x, transformed_y);
+    
+    _DrawTile(renderer, content, cur_segment,
+              transformed_x, transformed_y, false);
 }
 
 void Map::_DrawTile(SDL_Renderer *renderer, const Content &content,

@@ -44,7 +44,7 @@ class Column {
 public:
     int GetNumSegments();
     const Segment& GetSegment(int segment_num);
-    void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
+   void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
     void Bore(TiltType tilt_type);
     void Retilt(TiltType tilt_type);
     Column();
@@ -87,6 +87,11 @@ public:
     void Draw(SDL_Renderer *renderer, const Content& content,
               Coord2<int> position=Coord2<int>(),
               Orientation rotation=N);
+    void DrawColumn(SDL_Renderer *renderer, const Content& content,
+                    Coord2<int> column,
+                    Coord2<int> position=Coord2<int>(),
+                    Orientation rotation=N);
+    
     Map(int height, int width);
     Map();
 //    ~Map();
