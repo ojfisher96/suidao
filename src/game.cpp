@@ -14,15 +14,15 @@ Game::Game() {
 
 void Game::Init() {
     SDL_Init(SDL_INIT_EVERYTHING);
-    window = SDL_CreateWindow( "suidao",
-                               SDL_WINDOWPOS_CENTERED,
-                               SDL_WINDOWPOS_CENTERED,
-                               SCREEN_WIDTH, SCREEN_HEIGHT,
-                               SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow("suidao",
+                              SDL_WINDOWPOS_CENTERED,
+                              SDL_WINDOWPOS_CENTERED,
+                              SCREEN_WIDTH, SCREEN_HEIGHT,
+                              SDL_WINDOW_SHOWN);
     
     renderer = SDL_CreateRenderer(window, -1, 0);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-
+    
     IMG_Init(IMG_INIT_PNG);
     
     map = Map(10,10);
