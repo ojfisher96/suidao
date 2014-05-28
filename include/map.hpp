@@ -41,10 +41,10 @@ class Column {
     // Given there will be few updates and segments will be few,
     // a sorted vector does fine.
     std::vector<Segment> segments;
-public:
+  public:
     int GetNumSegments();
     const Segment& GetSegment(int segment_num);
-   void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
+    void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
     void Bore(TiltType tilt_type);
     void Retilt(TiltType tilt_type);
     Column();
@@ -82,7 +82,7 @@ class Map {
     // 'corner' here is relative to the orientation of the tile.
     int _GetCornerHeight(TiltType tilt_type, Direction corner);
     
-public:
+  public:
     // Test draw function
     void Draw(SDL_Renderer *renderer, const Content& content,
               Coord2<int> position=Coord2<int>(),
