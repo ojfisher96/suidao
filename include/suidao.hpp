@@ -35,6 +35,9 @@ class Game {
     
     SDL_Window* window;
     SDL_Renderer* renderer;
+
+    // TODO: make this an array of rows rather than the whole thing.
+    SDL_Texture* map_texture;
     
     void Init();
     void LoadContent();
