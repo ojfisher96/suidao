@@ -4,6 +4,7 @@
 #include "SDL2/SDL_image.h"
 #include <cmath>
 #include <cstdio>
+#include <cassert>
 #include "coordinate.hpp"
 
 #define TILE_SIZE 64
@@ -13,22 +14,21 @@ namespace Suidao {
 // Map function implementations
 //
 
-Map::Map(int height, int width) {
-    this->height = height;
-    this->width = width;
-    this->columns = new Column*[width];
-    for (int x = 0; x < width; x++) {
-        this->columns[x] = new Column[height];
-        for (int y = 0; y < height; y++) {
+Map::Map(Coord2<int> dimensions) {
+    this->dimensions = dimensions;
+    this->columns = new Column*[dimensions.x];
+    for (int x = 0; x < dimensions.x; x++) {
+        this->columns[x] = new Column[dimensions.y];
+        for (int y = 0; y < dimensions.y; y++) {
             // this->columns[x][y] = Column(1);
-            if (y < height/2) {
-                this->columns[x][y] = height/2 - y - 1;
+            if (y < dimensions.y/2) {
+                this->columns[x][y] = dimensions.y/2 - y - 1;
                 TiltType tilt;
                 tilt.style = SIDE_UP;
                 tilt.orientation = W;
                 this->columns[x][y].Retilt(tilt);
-            } else if (y > height/2) {
-                this->columns[x][y] = y - height/2 - 1;
+            } else if (y > dimensions.y/2) {
+                this->columns[x][y] = y - dimensions.y/2 - 1;
                 TiltType tilt;
                 tilt.style = SIDE_UP;
                 tilt.orientation = E;
@@ -44,8 +44,8 @@ Map::Map(int height, int width) {
 void Map::Draw(SDL_Renderer *renderer, const Content &content,
                Coord2<int> position, Orientation rotation) {
     // Starting at other side is a hack to get draw order correct.
-    for (int x = width-1; x >= 0; x--) {
-        for (int y = 0; y < height; y++) {
+    for (int x = dimensions.x-1; x >= 0; x--) {
+        for (int y = 0; y < dimensions.y; y++) {
             DrawColumn(renderer, content, Coord2<int>(x,y),
                        position, rotation);
         }
@@ -182,14 +182,26 @@ int Map::_GetCornerHeight(TiltType tilt_type, Direction corner) {
             [tilt_type.style]
             [((int)corner - (int)tilt_type.orientation + 4) % 4];
 }
+
+void Map::Update(const Map& m) {
+    assert(m.GetDimensions().x == dimensions.x &&
+           m.GetDimensions().y == dimensions.y);
+    for (int x = 0; x < dimensions.x; x++) {
+        for (int y = 0; y < dimensions.y; y++) {
+            columns[x][y].Update(m.columns[x][y]);
+        }
+    }
+}
     
 // Default constructor just to appease the compiler
 Map::Map() {
-    this->height = 0;
-    this->width = 0;
+    this->dimensions = Coord2<int>(0,0);
     this->columns = 0; // NULL
 }
 
+const Coord2<int>& Map::GetDimensions() const {
+    return dimensions;
+}
 /*
 Map::~Map() {
     for (int x = 0; x < width; x++) {
@@ -227,6 +239,11 @@ int Column::GetNumSegments() {
 
 const Segment& Column::GetSegment(int segment_num) {
     return this->segments[segment_num];
+}
+
+void Column::Update(const Column& to_copy) {
+    rock_type = to_copy.rock_type;
+    segments = to_copy.segments;
 }
 
 //

@@ -1,3 +1,4 @@
+
 #ifndef MAP_HPP
 #define MAP_HPP
 #include <vector>
@@ -47,6 +48,7 @@ class Column {
     void MakeCut(int top, int bottom, TiltType tilt_type=TiltType());
     void Bore(TiltType tilt_type);
     void Retilt(TiltType tilt_type);
+    void Update(const Column& to_copy);
     Column();
     Column(int height, int rock_type=0);
 };
@@ -65,7 +67,7 @@ enum FoundationType { BLOCK, TILT_AWAY, TILT_TOWARDS };
 }
 
 class Map {
-    int height, width;
+    Coord2<int> dimensions;
     Column **columns;
     void _DrawTile(SDL_Renderer *renderer, const Content &content,
                    const Segment &segment,
@@ -91,8 +93,12 @@ class Map {
                     Coord2<int> column,
                     Coord2<int> position=Coord2<int>(),
                     Orientation rotation=N);
+
+    void Update(const Map& m);
+
+    const Coord2<int>& GetDimensions() const;
     
-    Map(int height, int width);
+    Map(Coord2<int> dimensions);
     Map();
 //    ~Map();
 };

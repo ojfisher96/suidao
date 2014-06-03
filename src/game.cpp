@@ -25,7 +25,7 @@ void Game::Init() {
     
     IMG_Init(IMG_INIT_PNG);
     
-    map = Map(10,10);
+    map = Map(Coord2<int>(10,10));
     map_draw_position = Coord2<int>(0,240);
 }
 
