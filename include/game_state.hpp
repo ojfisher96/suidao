@@ -1,7 +1,7 @@
 #ifndef GAME_STATE_HPP
 #define GAME_STATE_HPP
 #include "map.hpp"
-#include "coorindate.hpp"
+#include "coordinate.hpp"
 
 namespace Suidao {
 
@@ -30,15 +30,16 @@ struct Command {
 
 class GameState {
     Map map;
+    void Tick();
   public:
     GameState();
-    GameState(Map m);
-    GameState(GameState prev);
+    GameState(const Map& m);
     
     Map& GetMap();
     bool ProcessCommand(Command c);
+    void Update(const GameState& to_copy);
 };
 
 }
 
-
+#endif // GAME_STATE_HPP
