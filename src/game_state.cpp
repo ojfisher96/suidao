@@ -13,7 +13,7 @@ bool GameState::ProcessCommand(Command c) {
 }
 
 void GameState::Update(const GameState& to_copy) {
-    
+    map.Update(to_copy.map);
     Tick();
 }
 
