@@ -35,7 +35,7 @@ class GameState {
     GameState();
     GameState(const Map& m);
     
-    Map& GetMap();
+    const Map& GetMap();
     bool ProcessCommand(Command c);
     void Update(const GameState& to_copy);
 };

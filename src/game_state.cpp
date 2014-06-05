@@ -20,5 +20,9 @@ void GameState::Update(const GameState& to_copy) {
 void GameState::Tick() {
     
 }
-    
+
+const Map& GameState::GetMap() {
+    return map;
+}
+
 }
