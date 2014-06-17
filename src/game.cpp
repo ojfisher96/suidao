@@ -27,6 +27,10 @@ void Game::Init() {
     
     map = Map(Coord2<int>(10,10));
     map_draw_position = Coord2<int>(0,240);
+    
+    for (int i = 0; i < GAME_STATE_CACHE_SIZE; i++) {
+        states[i] = GameState(map);
+    }
 }
 
 void Game::LoadContent() {
@@ -65,12 +69,14 @@ void Game::Network() {
 }
 
 void Game::Update() {
-    
+    states[(_timer.get_tick()+1) % GAME_STATE_CACHE_SIZE]
+            .Update(states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]);
 }
 
 void Game::Draw() {
     SDL_RenderClear(renderer);
-    map.Draw(renderer, content, map_draw_position);
+    states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]
+            .GetMap().Draw(renderer, content, map_draw_position);
     SDL_RenderPresent(renderer);
 }
 

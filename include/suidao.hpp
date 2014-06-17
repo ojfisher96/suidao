@@ -3,12 +3,16 @@
 
 #include "map.hpp"
 #include "coordinate.hpp"
+#include "game_state.hpp"
 #include "SDL2/SDL.h"
 
 namespace Suidao {
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
+
+// Should be a power of 2 for efficiency
+#define GAME_STATE_CACHE_SIZE 256
 
 class GameTimer {
   private:
@@ -32,6 +36,8 @@ class Game {
     Map map;
     Content content;
     Coord2<int> map_draw_position;
+
+    GameState states[GAME_STATE_CACHE_SIZE];
     
     SDL_Window* window;
     SDL_Renderer* renderer;

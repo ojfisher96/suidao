@@ -42,7 +42,7 @@ Map::Map(Coord2<int> dimensions) {
 
 // Test draw function
 void Map::Draw(SDL_Renderer *renderer, const Content &content,
-               Coord2<int> position, Orientation rotation) {
+               Coord2<int> position, Orientation rotation) const {
     // Starting at other side is a hack to get draw order correct.
     for (int x = dimensions.x-1; x >= 0; x--) {
         for (int y = 0; y < dimensions.y; y++) {
@@ -54,7 +54,7 @@ void Map::Draw(SDL_Renderer *renderer, const Content &content,
 
 void Map::DrawColumn(SDL_Renderer *renderer, const Content &content,
                      Coord2<int> column,
-                     Coord2<int> position, Orientation rotation) {
+                     Coord2<int> position, Orientation rotation) const {
     
     int transformed_x = (column.x + column.y) * TILE_SIZE/2 +
                         position.x;
@@ -78,7 +78,7 @@ void Map::DrawColumn(SDL_Renderer *renderer, const Content &content,
 void Map::_DrawTile(SDL_Renderer *renderer, const Content &content,
                     const Segment &segment,
                     int transformed_x, int transformed_y,
-                    bool selected) {
+                    bool selected) const {
     SDL_Rect tile_sheet_fragment;
     SDL_Rect offset;
     tile_sheet_fragment.x = TILE_SIZE*segment.tilt_type.orientation;
@@ -100,7 +100,7 @@ void Map::_DrawTile(SDL_Renderer *renderer, const Content &content,
 
 void Map::_DrawFoundation(SDL_Renderer *renderer, const Content &content,
                           const Segment &segment,
-                          int transformed_x, int transformed_y) {
+                          int transformed_x, int transformed_y) const {
     SDL_Rect tile_sheet_fragment;
     SDL_Rect offset;
     offset.x = transformed_x;
@@ -126,7 +126,7 @@ void Map::_DrawFoundation(SDL_Renderer *renderer, const Content &content,
 
 void Map::_DrawTopFoundation(SDL_Renderer *renderer, const Content &content,
                              const Segment &segment,
-                             int transformed_x, int transformed_y) {
+                             int transformed_x, int transformed_y) const {
     SDL_Rect tile_sheet_fragment;
     SDL_Rect offset;
     for (int side = 0; side < 2; side++) {
@@ -177,7 +177,7 @@ void Map::_DrawTopFoundation(SDL_Renderer *renderer, const Content &content,
     
 }
 
-int Map::_GetCornerHeight(TiltType tilt_type, Direction corner) {
+int Map::_GetCornerHeight(TiltType tilt_type, Direction corner) const {
     return CORNER_HEIGHTS
             [tilt_type.style]
             [((int)corner - (int)tilt_type.orientation + 4) % 4];

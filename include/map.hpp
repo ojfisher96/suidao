@@ -72,27 +72,27 @@ class Map {
     void _DrawTile(SDL_Renderer *renderer, const Content &content,
                    const Segment &segment,
                    int transformed_x, int transformed_y,
-                   bool selected);
+                   bool selected) const;
     void _DrawFoundation(SDL_Renderer *renderer, const Content &content,
                          const Segment &segment,
-                         int transformed_x, int transformed_y);
+                         int transformed_x, int transformed_y) const;
     void _DrawTopFoundation(SDL_Renderer *renderer, const Content &content,
                             const Segment &segment,
-                            int transformed_x, int transformed_y);
+                            int transformed_x, int transformed_y) const;
     
     // Returns height of a corner relative to the base of the tile.
     // 'corner' here is relative to the orientation of the tile.
-    int _GetCornerHeight(TiltType tilt_type, Direction corner);
+    int _GetCornerHeight(TiltType tilt_type, Direction corner) const;
     
   public:
     // Test draw function
     void Draw(SDL_Renderer *renderer, const Content& content,
               Coord2<int> position=Coord2<int>(),
-              Orientation rotation=N);
+              Orientation rotation=N) const;
     void DrawColumn(SDL_Renderer *renderer, const Content& content,
                     Coord2<int> column,
                     Coord2<int> position=Coord2<int>(),
-                    Orientation rotation=N);
+                    Orientation rotation=N) const;
 
     void Update(const Map& m);
 
