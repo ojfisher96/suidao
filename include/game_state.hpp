@@ -11,11 +11,8 @@ struct EntityID {
     int player_id;
     bool is_building;
     int entity_num;
-    EntityID(int player_id, bool is_building, int entity_num) {
-        this->player_id = player_id;
-        this->is_building = is_building;
-        this->entity_num = entity_num;
-    }
+    EntityID();
+    EntityID(int player_id, bool is_building, int entity_num);
 };
 
 struct Command {
@@ -26,6 +23,11 @@ struct Command {
         Coord3<int> click;
         EntityID target;
     };
+    Command();
+    Command(EntityID commanded, CommandType type,
+            bool target_is_entity, Coord3<int> click);
+    Command(EntityID commanded, CommandType type,
+            bool target_is_entity, EntityID target);
 };
 
 class GameState {
