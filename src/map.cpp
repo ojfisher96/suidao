@@ -61,18 +61,20 @@ void Map::DrawColumn(SDL_Renderer *renderer, const Content &content,
     int transformed_y = ((-column.x + column.y)) * TILE_SIZE/4 +
                         position.y;
     
-    // Only draws top segment for now.
-    const Segment& cur_segment =
-            columns[column.x][column.y].GetSegment(0);
-    
-    _DrawFoundation(renderer, content, cur_segment,
-                    transformed_x, transformed_y);
-    
-    _DrawTopFoundation(renderer, content, cur_segment,
-                       transformed_x, transformed_y);
-    
-    _DrawTile(renderer, content, cur_segment,
-              transformed_x, transformed_y, false);
+    for (int i = columns[column.x][column.y].GetNumSegments()-1;
+         i >= 0; i--) {
+        const Segment& cur_segment =
+                columns[column.x][column.y].GetSegment(i);
+
+        _DrawFoundation(renderer, content, cur_segment,
+                        transformed_x, transformed_y);
+
+        _DrawTopFoundation(renderer, content, cur_segment,
+                           transformed_x, transformed_y);
+
+        _DrawTile(renderer, content, cur_segment,
+                  transformed_x, transformed_y, false);
+    }
 }
 
 void Map::_DrawTile(SDL_Renderer *renderer, const Content &content,
