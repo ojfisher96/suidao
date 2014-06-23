@@ -12,6 +12,7 @@ GameState::GameState(const Map& m) {
 bool GameState::ProcessCommand(Command c) {
     // Stub for test of cutting
     map.GetColumn(Coord2<int>(1,9)).MakeCut(2,1);
+    return true;
 }
 
 void GameState::Update(const GameState& to_copy) {
