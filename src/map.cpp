@@ -234,11 +234,21 @@ Column::Column(int height, RockType rock_type) {
 
 void Column::MakeCut(int top, int bottom, TiltType tilt_type) {
     for (int i = 0; i < (int)segments.size(); i++) {
-        if (segments[i].top <= top && segments[i].bottom >= bottom) {
+        if ((top > segments[i].top ||
+             // check for case where tilted land above the 'top' point
+             // does not actually exist
+             (top == segments[i].top &&
+              segments[i].tilt_type.style == FLAT)) &&
+            bottom <= segments[i].bottom) {
+            // Entire segment is cut out
             segments.erase(segments.begin()+i);
             i--;
-        } else if (top < segments[i].top &&
+        } else if ((top < segments[i].top ||
+                    // check for extra land above 'top' point
+                    (top == segments[i].top &&
+                     segments[i].tilt_type.style != FLAT)) &&
                    bottom > segments[i].bottom) {
+            // Middle of segment cut out
             int high_top = segments[i].top;
             int low_bot = segments[i].bottom;
             TiltType original_tilt = segments[i].tilt_type;
@@ -247,11 +257,14 @@ void Column::MakeCut(int top, int bottom, TiltType tilt_type) {
             segments.insert(segments.begin()+i,
                             Segment(high_top, top, original_tilt));
             // Lower segment
-            segments.insert(segments.begin()+i+1, Segment(bottom, low_bot));
+            segments.insert(segments.begin()+i+1,
+                            Segment(bottom, low_bot, tilt_type));
             break;
-        } else if (top < segments[i].top && bottom <= segments[i].bottom) {
+        } else if (top < segments[i].top && top > segments[i].bottom &&
+                   bottom <= segments[i].bottom) {
             segments[i].bottom = top;
-        } else if (top >= segments[i].top && bottom > segments[i].bottom) {
+        } else if (top >= segments[i].top && bottom <= segments[i].top &&
+                   bottom > segments[i].bottom) {
             segments[i].top = bottom;
             segments[i].tilt_type = tilt_type;
         }
