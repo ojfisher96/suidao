@@ -202,6 +202,11 @@ Map::Map() {
 const Coord2<int>& Map::GetDimensions() const {
     return dimensions;
 }
+
+Column& Map::GetColumn(Coord2<int> pos) {
+    return columns[pos.x][pos.y];
+}
+
 /*
 Map::~Map() {
     for (int x = 0; x < width; x++) {

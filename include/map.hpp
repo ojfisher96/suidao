@@ -97,6 +97,7 @@ class Map {
     void Update(const Map& m);
 
     const Coord2<int>& GetDimensions() const;
+    Column& GetColumn(Coord2<int> pos);
     
     Map(Coord2<int> dimensions);
     Map();
