@@ -41,7 +41,7 @@ class Column {
     RockType rock_type;
     // Given there will be few updates and segments will be few,
     // a sorted vector does fine.
-    std::vector<Segment> segments;
+    std::vector<Segment> segments; // In order from high to low.
   public:
     int GetNumSegments();
     const Segment& GetSegment(int segment_num);
