@@ -233,7 +233,29 @@ Column::Column(int height, RockType rock_type) {
 }
 
 void Column::MakeCut(int top, int bottom, TiltType tilt_type) {
-    // TODO: binary search for segments to delete/trim.
+    for (int i = 0; i < (int)segments.size(); i++) {
+        if (segments[i].top <= top && segments[i].bottom >= bottom) {
+            segments.erase(segments.begin()+i);
+            i--;
+        } else if (top < segments[i].top &&
+                   bottom > segments[i].bottom) {
+            int high_top = segments[i].top;
+            int low_bot = segments[i].bottom;
+            TiltType original_tilt = segments[i].tilt_type;
+            segments.erase(segments.begin()+i);
+            // Higher segment
+            segments.insert(segments.begin()+i,
+                            Segment(high_top, top, original_tilt));
+            // Lower segment
+            segments.insert(segments.begin()+i+1, Segment(bottom, low_bot));
+            break;
+        } else if (top < segments[i].top && bottom <= segments[i].bottom) {
+            segments[i].bottom = top;
+        } else if (top >= segments[i].top && bottom > segments[i].bottom) {
+            segments[i].top = bottom;
+            segments[i].tilt_type = tilt_type;
+        }
+    }
 }
 
 void Column::Retilt(TiltType tilt_type) {
