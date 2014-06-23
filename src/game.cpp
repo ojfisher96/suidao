@@ -69,6 +69,12 @@ void Game::Network() {
 }
 
 void Game::Update() {
+
+    if (_timer.get_tick() == 10) {
+        states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]
+                .ProcessCommand(Command());
+    }
+
     states[(_timer.get_tick()+1) % GAME_STATE_CACHE_SIZE]
             .Update(states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]);
 }
