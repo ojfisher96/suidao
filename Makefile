@@ -29,7 +29,7 @@ clean:
 		rm -f src/*.o
 	    rm -f suidao
 
-suidao:        src/content.o src/game.o src/game_loop.o src/main.o src/map.o src/game_state.o
+suidao:        src/content.o src/game.o src/game_loop.o src/main.o src/map.o src/game_state.o src/animation.o
 	$(CXX) $(CXXFLAGS) -o suidao src/*.o $(LDFLAGS)
 
 src/%.o: src/%.cpp include/%.hpp
