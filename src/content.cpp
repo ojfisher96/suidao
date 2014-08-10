@@ -3,9 +3,13 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_mixer.h"
 
+#include "jsoncpp/json/json.h"
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+
+#include <fstream>
 
 namespace Suidao {
 
@@ -59,9 +63,9 @@ Mix_Music* Content::GetMusic(std::string path) const {
     return asset;
 }
 
-Animation* Content::GetAnimation(std::string path) const {
+Animation Content::GetAnimation(std::string path) const {
     auto iterator = _animations.find(path);
-    Animation* asset = NULL;
+    Animation asset = Animation(NULL, -1);
     if (iterator != _animations.end()) {
         asset = iterator->second;
     }
@@ -116,7 +120,11 @@ void Content::_LoadFolder(std::string root, std::string path,
                     case MUSIC:
                         _musics[file_path] =
                                 Mix_LoadMUS((root + file_path).c_str());
-                            break;
+                        break;
+                    case ANIMATION:
+                        _animations[file_path] =
+                                _LoadAnimation(root + file_path);
+                        break;
                     default:
                         break;
                 }
@@ -132,6 +140,24 @@ void Content::_LoadFolder(std::string root, std::string path,
     closedir(dir);
 }
 
+Animation Content::_LoadAnimation(std::string path) {
+    Json::Value json_root;
+    Json::Reader reader;
+
+    std::ifstream json_file(path);
+    std::string json_file_content(
+        (std::istreambuf_iterator<char>(json_file)),
+        std::istreambuf_iterator<char>());
+    
+    reader.parse(json_file_content, json_root);
+
+    std::string graphic_name =
+            json_root.get("graphic", "").asString();
+    int height = json_root.get("height", -1).asInt();
+
+    return Animation(GetGraphic(graphic_name), height);
+}
+    
 ContentType Content::_FileType(std::string path) {
     int dot = path.find_first_of('.');
     if (dot == -1) { // Fairly sure this is right.
