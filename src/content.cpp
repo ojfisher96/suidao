@@ -9,13 +9,26 @@
 
 namespace Suidao {
 
+const char *FOLDERS[] = {
+    "graphics/",
+    "sounds/",
+    "music/",
+};
+
 void Content::LoadContent(std::string folder,
                           SDL_Renderer* renderer) {
     // TODO: Write code to deal with wrapping default content.
     // i.e. the first folder loaded is default, and therefore
     // is accessed from some default folder in the Content
     // hierarchy, rather than from the actual folder name.
-    _LoadFolder(folder, "", renderer);
+
+    if (*(folder.end()-1) != '/') {
+        folder = folder + "/";
+    }
+
+    for (int t = 0; t < NUM_CONTENT_TYPES; t++) {
+        _LoadFolder(folder + FOLDERS[t], "", (ContentType)t, renderer);
+    }
 }
 
 SDL_Texture* Content::GetGraphic(std::string path) const {
@@ -46,7 +59,7 @@ Mix_Music* Content::GetMusic(std::string path) const {
 }
 
 void Content::_LoadFolder(std::string root, std::string path,
-                          SDL_Renderer* renderer) {
+                          ContentType type, SDL_Renderer* renderer) {
     DIR *dir;
     dirent *ent;
     dir = opendir((root + path).c_str());
@@ -74,7 +87,7 @@ void Content::_LoadFolder(std::string root, std::string path,
             stat((root + file_path).c_str(), &file_attributes);
             if (S_ISREG(file_attributes.st_mode)) {
 #endif
-                switch (_FileType(ent->d_name)) {
+                switch (type) {
                     case GRAPHIC:
                         loaded_image =
                                 IMG_Load((root + file_path).c_str());
@@ -102,7 +115,7 @@ void Content::_LoadFolder(std::string root, std::string path,
 #else
             } else if (S_ISDIR(file_attributes.st_mode)) {
 #endif
-                _LoadFolder(root, std::string(file_path), renderer);
+                _LoadFolder(root, std::string(file_path), type, renderer);
             }
         }
     }

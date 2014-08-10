@@ -8,13 +8,14 @@
 namespace Suidao {
 
 enum ContentType { GRAPHIC, SOUND, MUSIC, OTHER };
+const int NUM_CONTENT_TYPES = (int)OTHER;
 
 class Content {
     std::map<std::string,SDL_Texture*> _graphics;
     std::map<std::string,Mix_Chunk*> _sounds;
     std::map<std::string,Mix_Music*> _musics;
     void _LoadFolder(std::string root, std::string path,
-                     SDL_Renderer* renderer);
+                     ContentType type, SDL_Renderer* renderer);
     ContentType _FileType(std::string path);
   public:
     void LoadContent(std::string folder, SDL_Renderer* renderer);
