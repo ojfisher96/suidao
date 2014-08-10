@@ -13,6 +13,7 @@ const char *FOLDERS[] = {
     "graphics/",
     "sounds/",
     "music/",
+    "animations/",
 };
 
 void Content::LoadContent(std::string folder,
@@ -53,6 +54,15 @@ Mix_Music* Content::GetMusic(std::string path) const {
     auto iterator = _musics.find(path);
     Mix_Music* asset = NULL;
     if (iterator != _musics.end()) {
+        asset = iterator->second;
+    }
+    return asset;
+}
+
+Animation* Content::GetAnimation(std::string path) const {
+    auto iterator = _animations.find(path);
+    Animation* asset = NULL;
+    if (iterator != _animations.end()) {
         asset = iterator->second;
     }
     return asset;
