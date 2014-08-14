@@ -32,6 +32,7 @@ Dependencies
 
 - SDL2
 - JsonCpp
+- Lua 5.2
 
 ### Other Licenses ###
 
