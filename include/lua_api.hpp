@@ -6,15 +6,11 @@
 
 namespace Suidao {
 
-class LuaAPI {
-    Map *map;
-    int map_get_num_column_segments(lua_State *ls);
-    int map_get_dimensions(lua_State *ls);
-    int map_get_segment(lua_State *ls);
-  public:
-    LuaAPI(Map *map, lua_State *ls);
-};
-
+int map_get_num_column_segments(lua_State *ls);
+int map_get_dimensions(lua_State *ls);
+int map_get_segment(lua_State *ls);
+void InitialiseLuaAPI(Map *m, lua_State *ls);
+void SetLuaAPIMap(Map *m);
 }
 
 #endif // LUA_API_HPP

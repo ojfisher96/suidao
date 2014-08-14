@@ -1,21 +1,38 @@
 #include "lua_api.hpp"
 #include "coordinate.hpp"
 
+#include <cstdio>
+
 namespace Suidao {
 
-LuaAPI::LuaAPI(Map *map, lua_State *ls) {
-    this->map = map;
-    // TODO: register functions
+static Map *map;
+
+void InitialiseLuaAPI(Map *m, lua_State *ls) {
+    map = m;
+    
+    lua_newtable(ls);
+
+    lua_pushcfunction(ls, &map_get_num_column_segments);
+    lua_setfield(ls, -2, "GetNumSegments");
+    lua_pushcfunction(ls, &map_get_dimensions);
+    lua_setfield(ls, -2, "GetDimensions");
+    lua_pushcfunction(ls, &map_get_segment);
+    lua_setfield(ls, -2, "GetSegment");
+
+    lua_setglobal(ls, "Map");
 }
 
-int LuaAPI::map_get_num_column_segments(lua_State *ls) {
+void SetLuaAPIMap(Map *m) {
+    map = m;
+}
+    
+int map_get_num_column_segments(lua_State *ls) {
     int num_column_segments;
     
     if (lua_gettop(ls) >= 2 &&
         lua_isnumber(ls, -1) && lua_isnumber(ls, -2)) {
-        int x = lua_tointeger(ls, -1);
-        int y = lua_tointeger(ls, -2);
-        
+        int x = lua_tointeger(ls, -2);
+        int y = lua_tointeger(ls, -1);
         num_column_segments = map->GetColumn(Coord2<int>(x,y)).GetNumSegments();
     } else {
         // ERROR
@@ -26,20 +43,20 @@ int LuaAPI::map_get_num_column_segments(lua_State *ls) {
     return 1;
 }
 
-int LuaAPI::map_get_dimensions(lua_State *ls) {
+int map_get_dimensions(lua_State *ls) {
     lua_pushinteger(ls, map->GetDimensions().x);
     lua_pushinteger(ls, map->GetDimensions().y);
     return 2;
 }
 
-int LuaAPI::map_get_segment(lua_State *ls) {
+int map_get_segment(lua_State *ls) {
     if (lua_gettop(ls) >= 3 &&
         lua_isnumber(ls, -1) && lua_isnumber(ls, -2) &&
         lua_isnumber(ls, -3)) {
         
-        int x = lua_tointeger(ls, -1);
+        int x = lua_tointeger(ls, -3);
         int y = lua_tointeger(ls, -2);
-        int segment_num = lua_tointeger(ls, -3);
+        int segment_num = lua_tointeger(ls, -1);
 
         const Segment& segment = map->GetColumn(Coord2<int>(x,y)).GetSegment(segment_num);
 
