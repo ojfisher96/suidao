@@ -4,6 +4,7 @@
 #include "map.hpp"
 #include "coordinate.hpp"
 #include "game_state.hpp"
+#include "menu.hpp"
 #include "SDL2/SDL.h"
 
 namespace Suidao {
@@ -37,6 +38,8 @@ class Game {
     Content content;
     Coord2<int> map_draw_position;
 
+    Menu menu;
+
     GameState states[GAME_STATE_CACHE_SIZE];
     
     SDL_Window* window;
@@ -47,6 +50,7 @@ class Game {
     
     void Init();
     void LoadContent();
+    void MainMenu();
     void Input();
     void Network();
     void Update();

@@ -7,6 +7,9 @@ namespace Suidao {
 void Game::Run() {
     Init();
     LoadContent();
+
+    MainMenu();
+    
     for (;;) {
         Input();
         Network();
