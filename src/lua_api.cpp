@@ -19,6 +19,8 @@ void InitialiseLuaAPI(lua_State *ls) {
     lua_setfield(ls, -2, "GetDimensions");
     lua_pushcfunction(ls, &map_get_segment);
     lua_setfield(ls, -2, "GetSegment");
+    lua_pushcfunction(ls, &map_make_cut);
+    lua_setfield(ls, -2, "MakeCut");
 
     lua_setglobal(ls, "Map");
     
@@ -91,6 +93,23 @@ int map_get_segment(lua_State *ls) {
     return 1;
 }
 
+int map_make_cut(lua_State *ls) {
+    if (lua_gettop(ls) >= 4 &&
+        lua_isnumber(ls, -1) && lua_isnumber(ls, -2) &&
+        lua_isnumber(ls, -2) && lua_isnumber(ls, -4)) {
+
+        int x = lua_tointeger(ls, -4);
+        int y = lua_tointeger(ls, -3);
+        int top = lua_tointeger(ls, -2);
+        int bottom = lua_tointeger(ls, -1);
+        map->GetColumn(Coord2<int>(x,y)).MakeCut(top, bottom);
+    } else {
+        // ERROR
+    }
+    
+    return 0;
+}
+    
 int get_entity(lua_State *ls) {
     if (lua_gettop(ls) >= 1 && lua_istable(ls, 1)) {
         lua_getfield(ls, 1, "entity_num");

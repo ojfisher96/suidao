@@ -13,7 +13,8 @@ namespace Suidao {
 int map_get_num_column_segments(lua_State *ls);
 int map_get_dimensions(lua_State *ls);
 int map_get_segment(lua_State *ls);
-
+int map_make_cut(lua_State *ls);
+    
 int get_entity(lua_State *ls);
 
 void InitialiseLuaAPI(lua_State *ls);
