@@ -2,18 +2,14 @@
 #define GAME_STATE_HPP
 #include "map.hpp"
 #include "coordinate.hpp"
+#include "entity_id.hpp"
+#include "unit.hpp"
+
+#include <vector>
 
 namespace Suidao {
-
+    
 typedef int CommandType;
-
-struct EntityID {
-    int player_id;
-    bool is_building;
-    int entity_num;
-    EntityID();
-    EntityID(int player_id, bool is_building, int entity_num);
-};
 
 struct Command {
     EntityID commanded;
@@ -31,11 +27,14 @@ struct Command {
 };
 
 class GameState {
+    Content *content;
+    int num_players;
     Map map;
+    std::vector<Unit> *units;
     void Tick();
   public:
     GameState();
-    GameState(const Map& m);
+    GameState(const Map& m, Content *content, int num_players=1);
     
     const Map& GetMap();
     bool ProcessCommand(Command c);

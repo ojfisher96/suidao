@@ -34,7 +34,7 @@ void Game::Init() {
     map_draw_position = Coord2<int>(0,240);
     
     for (int i = 0; i < GAME_STATE_CACHE_SIZE; i++) {
-        states[i] = GameState(map);
+        states[i] = GameState(map, &content);
     }
 }
 

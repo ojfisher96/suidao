@@ -2,6 +2,10 @@
 #define UNIT_HPP
 #include <string>
 #include "coordinate.hpp"
+#include "entity_id.hpp"
+#include "map.hpp"
+
+#include "lua5.2/lua.hpp"
 
 namespace Suidao {
 
@@ -11,14 +15,19 @@ struct UnitDescription {
 };
 
 class Unit {
+    lua_State *ls;
   public:
-    int player_id;
+    EntityID unit_id;
     UnitDescription description;
+    int hitpoints;
     Coord3<int> position;
-    std::string script;
+    std::string script_name;
     
     Unit();
-    Unit(int player_id, std::string script);
+    Unit(EntityID unit_id, std::string script_name, Content &content);
+    void Update(Map *map);
+    int ReceiveDamage(EntityID attacker, int damage);
+    void PushLuaTable(lua_State *push_to);
 };
 
 }

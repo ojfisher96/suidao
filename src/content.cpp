@@ -18,6 +18,7 @@ const char *FOLDERS[] = {
     "sounds/",
     "music/",
     "animations/",
+    "scripts/",
 };
 
 void Content::LoadContent(std::string folder,
@@ -67,6 +68,15 @@ Animation Content::GetAnimation(std::string path) const {
     auto iterator = _animations.find(path);
     Animation asset = Animation(NULL, -1);
     if (iterator != _animations.end()) {
+        asset = iterator->second;
+    }
+    return asset;
+}
+
+std::string Content::GetScript(std::string path) const {
+    auto iterator = _scripts.find(path);
+    std::string asset = "";
+    if (iterator != _scripts.end()) {
         asset = iterator->second;
     }
     return asset;
@@ -125,6 +135,10 @@ void Content::_LoadFolder(std::string root, std::string path,
                         _animations[file_path] =
                                 _LoadAnimation(root + file_path);
                         break;
+                    case SCRIPT:
+                        _scripts[file_path] =
+                                _LoadScript(root + file_path);
+                        break;
                     default:
                         break;
                 }
@@ -140,6 +154,14 @@ void Content::_LoadFolder(std::string root, std::string path,
     closedir(dir);
 }
 
+std::string Content::_LoadScript(std::string path) {
+    std::ifstream script_file(path);
+    std::string script(
+        (std::istreambuf_iterator<char>(script_file)),
+        std::istreambuf_iterator<char>());
+    return script;
+}
+    
 Animation Content::_LoadAnimation(std::string path) {
     Json::Value json_root;
     Json::Reader reader;
