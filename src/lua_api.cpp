@@ -58,7 +58,8 @@ int map_get_segment(lua_State *ls) {
         int y = lua_tointeger(ls, -2);
         int segment_num = lua_tointeger(ls, -1);
 
-        const Segment& segment = map->GetColumn(Coord2<int>(x,y)).GetSegment(segment_num);
+        const Segment& segment =
+            map->GetColumn(Coord2<int>(x,y)).GetSegment(segment_num);
 
         lua_newtable(ls);
         lua_pushinteger(ls, segment.top);
