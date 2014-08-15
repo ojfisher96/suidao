@@ -1,15 +1,16 @@
 #include "lua_api.hpp"
 #include "coordinate.hpp"
+#include "unit.hpp"
 
 #include <cstdio>
+#include <vector>
 
 namespace Suidao {
 
 static Map *map;
+static std::vector<Unit> *units;
 
-void InitialiseLuaAPI(Map *m, lua_State *ls) {
-    map = m;
-    
+void InitialiseLuaAPI(lua_State *ls) {
     lua_newtable(ls);
 
     lua_pushcfunction(ls, &map_get_num_column_segments);
@@ -20,12 +21,16 @@ void InitialiseLuaAPI(Map *m, lua_State *ls) {
     lua_setfield(ls, -2, "GetSegment");
 
     lua_setglobal(ls, "Map");
+    
+    lua_pushcfunction(ls, &get_entity);
+    lua_setglobal(ls, "GetEntity");
 }
 
-void SetLuaAPIMap(Map *m) {
+void SetLuaAPIObjects(Map *m, std::vector<Unit> *u) {
     map = m;
+    units = u;
 }
-    
+
 int map_get_num_column_segments(lua_State *ls) {
     int num_column_segments;
     
@@ -86,4 +91,28 @@ int map_get_segment(lua_State *ls) {
     return 1;
 }
 
+int get_entity(lua_State *ls) {
+    if (lua_gettop(ls) >= 1 && lua_istable(ls, 1)) {
+        lua_getfield(ls, 1, "entity_num");
+        lua_getfield(ls, 1, "is_building");
+        lua_getfield(ls, 1, "player_id");
+        
+        EntityID eid = EntityID(lua_tointeger(ls, -1),
+                                lua_tointeger(ls, -2),
+                                lua_tointeger(ls, -3));
+        lua_settop(ls, 1);
+        
+        if (eid.is_building) {
+            // TODO: Buildings
+        } else {
+            units[eid.player_id][eid.entity_num].PushLuaTable(ls);
+        }
+    } else {
+        // ERROR
+        lua_newtable(ls);
+    }
+    
+    return 1;
+}
+    
 }
