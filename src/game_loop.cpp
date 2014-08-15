@@ -9,11 +9,13 @@ void Game::Run() {
     LoadContent();
 
     MainMenu();
-    
+
+    // Basic game loop
     for (;;) {
         Input();
         Network();
-        
+
+        // ONLY UPDATE IS TIMED
         _timer.nextTickStart();
         Update();
         _timer.nextTickEnd();

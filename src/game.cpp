@@ -13,6 +13,7 @@ Game::Game() {
     
 }
 
+// Initialise the game
 void Game::Init() {
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("suidao",
@@ -29,10 +30,12 @@ void Game::Init() {
     TTF_Init();
 
     menu.Init();
-    
+
+    // Create original map
     map = Map(Coord2<int>(10,10));
     map_draw_position = Coord2<int>(0,240);
-    
+
+    // Initialise all the game states in the cache
     for (int i = 0; i < GAME_STATE_CACHE_SIZE; i++) {
         states[i] = GameState(map, &content);
     }
@@ -65,7 +68,9 @@ void Game::MainMenu() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
+// Gets input for the game
 void Game::Input() {
+    // Exit when X pressed or Alt-F4 or whatever.
     SDL_Event event;
     while (SDL_PollEvent(&event) != 0) {
         if (event.type == SDL_QUIT) {
@@ -76,7 +81,8 @@ void Game::Input() {
             }
         }
     }
-    
+
+    // Move the view around
     const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
     if (keyboard_state[SDL_SCANCODE_UP]) {
         map_draw_position.y += 10;
@@ -93,22 +99,25 @@ void Game::Input() {
 }
 
 void Game::Network() {
-    
+    // TODO: Networking code
 }
 
 void Game::Update() {
 
+    // Test command
     if (_timer.get_tick() == 10) {
         states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]
                 .ProcessCommand(Command());
     }
 
+    // Advance to the next state and update
     states[(_timer.get_tick()+1) % GAME_STATE_CACHE_SIZE]
             .Update(states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]);
 }
 
 void Game::Draw() {
     SDL_RenderClear(renderer);
+    // Draw the map at the current state
     states[_timer.get_tick() % GAME_STATE_CACHE_SIZE]
             .GetMap().Draw(renderer, content, map_draw_position);
     SDL_RenderPresent(renderer);

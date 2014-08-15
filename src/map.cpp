@@ -17,6 +17,8 @@ namespace Suidao {
 Map::Map(Coord2<int> dimensions) {
     this->dimensions = dimensions;
     this->columns = new Column*[dimensions.x];
+
+    // Generates the 'valley' terrain
     for (int x = 0; x < dimensions.x; x++) {
         this->columns[x] = new Column[dimensions.y];
         for (int y = 0; y < dimensions.y; y++) {

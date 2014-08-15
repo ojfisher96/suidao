@@ -93,9 +93,12 @@ void Content::_LoadFolder(std::string root, std::string path,
         }
         while ((ent = readdir (dir)) != NULL) {
             std::string file_path;
+            // Ignore dotfiles and special folders
             if (ent->d_name[0] == '.') {
                 continue;
             }
+
+            // add a forward slash at the end
             if (path.size() != 0 && *(path.end()-1) != '/') {
                 file_path = path + "/" + std::string(ent->d_name);
             } else {
@@ -111,6 +114,7 @@ void Content::_LoadFolder(std::string root, std::string path,
             stat((root + file_path).c_str(), &file_attributes);
             if (S_ISREG(file_attributes.st_mode)) {
 #endif
+                // Load the correct type of file
                 switch (type) {
                     case GRAPHIC:
                         loaded_image =
@@ -147,6 +151,7 @@ void Content::_LoadFolder(std::string root, std::string path,
 #else
             } else if (S_ISDIR(file_attributes.st_mode)) {
 #endif
+                // Recurse to the next folder
                 _LoadFolder(root, std::string(file_path), type, renderer);
             }
         }
@@ -156,6 +161,7 @@ void Content::_LoadFolder(std::string root, std::string path,
 
 std::string Content::_LoadScript(std::string path) {
     std::ifstream script_file(path);
+    // Load entire script into a string
     std::string script(
         (std::istreambuf_iterator<char>(script_file)),
         std::istreambuf_iterator<char>());
@@ -167,6 +173,7 @@ Animation Content::_LoadAnimation(std::string path) {
     Json::Reader reader;
 
     std::ifstream json_file(path);
+    // Load all of json_file into a string
     std::string json_file_content(
         (std::istreambuf_iterator<char>(json_file)),
         std::istreambuf_iterator<char>());
@@ -179,10 +186,11 @@ Animation Content::_LoadAnimation(std::string path) {
 
     return Animation(GetGraphic(graphic_name), height);
 }
-    
+
+// Depricated: Kept for future reference
 ContentType Content::_FileType(std::string path) {
     int dot = path.find_first_of('.');
-    if (dot == -1) { // Fairly sure this is right.
+    if (dot == -1) {
         return OTHER;
     }
     if (0 == path.compare(dot + 1, path.length(), "png")) {

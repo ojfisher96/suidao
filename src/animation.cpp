@@ -10,6 +10,7 @@ namespace Suidao {
 
     void Animation::Draw(SDL_Renderer *renderer,
                          Coord2<int> position, int frame) {
+        // Get width and total height of texture
         int width;
         int total_height;
         SDL_QueryTexture(NULL, NULL, NULL, &total_height, &width);

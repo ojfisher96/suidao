@@ -10,6 +10,8 @@ Unit::Unit() {}
 Unit::Unit(EntityID unit_id, std::string script_name, Content &content) {
     this->unit_id = unit_id;
     this->script_name = script_name;
+
+    // Set up lua
     ls = luaL_newstate();
     luaL_openlibs(ls);
     InitialiseLuaAPI(ls);
@@ -17,13 +19,15 @@ Unit::Unit(EntityID unit_id, std::string script_name, Content &content) {
 }
 
 void Unit::Update(Map *map) {
+    // Calls the lua update function
     lua_getglobal(ls, "update");
     lua_call(ls, 0, 0);
 }
 
 int Unit::ReceiveDamage(EntityID attacker, int damage) {
     lua_getglobal(ls, "attacked");
-    // TODO: call the function
+
+    // Calls a lua function calculating the real amount of damage taken.
     lua_newtable(ls);
     lua_pushinteger(ls, attacker.player_id);
     lua_setfield(ls, -2, "player_id");
