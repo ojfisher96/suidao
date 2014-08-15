@@ -3,6 +3,7 @@
 
 namespace Suidao {
 
+// Identifies any user-controlled entity in the game.
 struct EntityID {
     int player_id;
     bool is_building;

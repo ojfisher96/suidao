@@ -12,6 +12,7 @@ enum Direction {
 };
 typedef Direction Orientation;
 
+// This represents the ways in which the top of a segment can be tilted.
 enum TiltStyle {
     FLAT, CORNER_UP, SIDE_UP, V_UP, CORNER_DOWN, DIAGONAL, // V_DOWN,
 };
@@ -26,6 +27,7 @@ struct TiltType {
 typedef int SurfaceType;
 typedef int RockType;
 
+// Represents a contiguous section of terrain in a column
 struct Segment {
     int top, bottom;
     TiltType tilt_type;
@@ -35,6 +37,8 @@ struct Segment {
                      SurfaceType surface_type=0);
 };
 
+// Represents a column (unit-square prism) which contains
+// segmented blocks of land
 class Column {
     RockType rock_type;
     // Given there will be few updates and segments will be few,
@@ -52,6 +56,7 @@ class Column {
 };
 
 namespace {
+// Heights of each of the corners for each of the tilt styles
 const int CORNER_HEIGHTS[][4] =
 {
     {0,0,0,0},
@@ -83,23 +88,25 @@ class Map {
     int _GetCornerHeight(TiltType tilt_type, Direction corner) const;
     
   public:
-    // Test draw function
+    // Draws the entire map
     void Draw(SDL_Renderer *renderer, const Content& content,
               Coord2<int> position=Coord2<int>(),
               Orientation rotation=N) const;
+    // Draws a single column
     void DrawColumn(SDL_Renderer *renderer, const Content& content,
                     Coord2<int> column,
                     Coord2<int> position=Coord2<int>(),
                     Orientation rotation=N) const;
-
+    
+    // Updates this map with the data from another.
     void Update(const Map& m);
 
+    // Getter functions
     const Coord2<int>& GetDimensions() const;
     Column& GetColumn(Coord2<int> pos);
     
     Map(Coord2<int> dimensions);
     Map();
-//    ~Map();
 };
 
 }

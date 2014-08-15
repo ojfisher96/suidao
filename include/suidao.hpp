@@ -15,6 +15,8 @@ namespace Suidao {
 // Should be a power of 2 for efficiency
 #define GAME_STATE_CACHE_SIZE 256
 
+// Keeps track of how long each frame lasts
+// and the current tick.
 class GameTimer {
   private:
     int _tick;
@@ -33,13 +35,17 @@ class GameTimer {
 class Game {
   private:
     GameTimer _timer;
-    
+
+    // Default map
     Map map;
     Content content;
+    // Position of the view of the world
     Coord2<int> map_draw_position;
 
     Menu menu;
 
+    // A cache of game states is kept in case a rollback needs to occur
+    // (e.g. a command wasn't sent over the network in time)
     GameState states[GAME_STATE_CACHE_SIZE];
     
     SDL_Window* window;

@@ -2,6 +2,12 @@
 #define COORDINATE_HPP
 namespace Suidao {
 
+// Provides types for coordinates and vector types.
+// These allow operations on relative and absolute points
+// (vectors/coordinates) to be type safe.
+// e.g. Adding two coordinates is forbidden
+// (it doesn't make sense to add two absolute values)
+
 template <class T>
 struct Vector2 {
     T x, y;

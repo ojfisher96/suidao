@@ -11,10 +11,17 @@ namespace Suidao {
     
 typedef int CommandType;
 
+// A command is a single change which is made to the game state.
+// Each command is generated from user input, then fed into the local
+// game state as well as other clients on the network if the game is
+// multiplayer. This design allows the game to be deterministic and
+// means multiplayer can function properly without too much challenge.
 struct Command {
     EntityID commanded;
     CommandType type;
     bool target_is_entity;
+    // The target of a command can either be an entity (unit or building)
+    // or a position on the map.
     union {
         Coord3<int> click;
         EntityID target;
@@ -26,11 +33,15 @@ struct Command {
             bool target_is_entity, EntityID target);
 };
 
+// The game state stores the state of the simulation up to
+// a certain point.
 class GameState {
     Content *content;
     int num_players;
     Map map;
     std::vector<Unit> *units;
+    // Tick steps through the simulation which doesn't involve
+    // the processing of a command
     void Tick();
   public:
     GameState();
@@ -38,6 +49,7 @@ class GameState {
     
     const Map& GetMap();
     bool ProcessCommand(Command c);
+    // Update will copy the given game state then call tick.
     void Update(const GameState& to_copy);
 };
 
