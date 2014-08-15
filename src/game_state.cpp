@@ -20,7 +20,6 @@ GameState::GameState(const Map& m, Content *content,
 
 bool GameState::ProcessCommand(Command c) {
     units[0].push_back(Unit(EntityID(0, false, 0), "marine", *content));
-    SetLuaAPIObjects(&map, units);
     
     // Stub for test of cutting
     map.GetColumn(Coord2<int>(1,9)).MakeCut(2,1);
@@ -30,6 +29,7 @@ bool GameState::ProcessCommand(Command c) {
 
 void GameState::Update(const GameState& to_copy) {
     map.Update(to_copy.map);
+    SetLuaAPIObjects(&map, units);
     for (int player = 0; player < num_players; player++) {
         units[player] = to_copy.units[player];
     }
