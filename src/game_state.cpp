@@ -9,35 +9,28 @@
 namespace Suidao {
 
 GameState::GameState() {}
-GameState::GameState(const Map& m) {
+GameState::GameState(const Map& m, Content *content,
+                     int num_players) {
     map = Map(m.GetDimensions());
     map.Update(m);
+    this->num_players = num_players;
+    this->content = content;
+    this->units = new std::vector<Unit>[num_players];
 }
 
 bool GameState::ProcessCommand(Command c) {
+    units[0].push_back(Unit(EntityID(0, false, 0), "marine", *content));
+    SetLuaAPIObjects(&map, units);
     
-    lua_State *ls = luaL_newstate();
-    InitialiseLuaAPI(&map, ls);
-
     // Stub for test of cutting
     map.GetColumn(Coord2<int>(1,9)).MakeCut(2,1);
-
-    if (luaL_dostring(ls, "function foo () return Map.GetSegment(0,0,0).top end")) {
-        printf("bleh\n");
-        fflush(stdout);
-    } else {
-        lua_getglobal(ls, "foo");
-        lua_call(ls, 0, 1);
-        printf("Result: %d\n", lua_tointeger(ls, -1));
-    }
-    lua_close(ls);
-    
     
     return true;
 }
 
 void GameState::Update(const GameState& to_copy) {
     map.Update(to_copy.map);
+    
     Tick();
 }
 
