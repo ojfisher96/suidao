@@ -1,5 +1,6 @@
 #include <cstdio>
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 #include "SDL2/SDL_image.h"
 #include "suidao.hpp"
 #include "map.hpp"
@@ -24,6 +25,10 @@ void Game::Init() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     
     IMG_Init(IMG_INIT_PNG);
+
+    TTF_Init();
+
+    menu.Init();
     
     map = Map(Coord2<int>(10,10));
     map_draw_position = Coord2<int>(0,240);
@@ -35,6 +40,29 @@ void Game::Init() {
 
 void Game::LoadContent() {
     content.LoadContent("content", renderer);
+}
+
+void Game::MainMenu() {
+    SDL_Event event;
+    for (;;) {
+        SDL_RenderClear(renderer);
+        menu.Draw(renderer);
+        SDL_RenderPresent(renderer);
+
+        if (!SDL_PollEvent(&event)) continue;
+        if (event.type == SDL_QUIT) {
+            Exit();
+        } else if (event.type == SDL_MOUSEBUTTONDOWN && 
+                event.button.button == SDL_BUTTON_LEFT) {
+            int clickx = event.button.x, clicky = event.button.y;
+            if (menu.boxes["play"].inBox(clickx, clicky)) break;
+            else if (menu.boxes["quit"].inBox(clickx, clicky)) {
+                Exit();
+            } 
+        }
+    }
+
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
 void Game::Input() {
@@ -87,6 +115,7 @@ void Game::Draw() {
 }
 
 void Game::CleanUp() {
+    TTF_Quit();
     SDL_Quit();
 }
 
