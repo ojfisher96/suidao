@@ -30,12 +30,18 @@ bool GameState::ProcessCommand(Command c) {
 
 void GameState::Update(const GameState& to_copy) {
     map.Update(to_copy.map);
-    
+    for (int player = 0; player < num_players; player++) {
+        units[player] = to_copy.units[player];
+    }
     Tick();
 }
 
 void GameState::Tick() {
-    
+    for (int player = 0; player < num_players; player++) {
+        for (int u = 0; u < (int)units[player].size(); u++) {
+            units[player][u].Update(&map);
+        }
+    }
 }
 
 const Map& GameState::GetMap() {
