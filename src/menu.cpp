@@ -8,6 +8,7 @@ namespace Suidao {
 
 TextBox::TextBox() {}
 
+// Constructs a text box, including its size, position, text, font and background colour
 TextBox::TextBox(int width, int height, int x, int y, bool draw_background,
 		Uint8 colR, Uint8 colG, Uint8 colB, std::string text,
 		Uint8 textR, Uint8 textG, Uint8 textB,
@@ -21,6 +22,7 @@ TextBox::TextBox(int width, int height, int x, int y, bool draw_background,
 	this->font = TTF_OpenFont(font_loc.c_str(), font_size);
 }
 
+// Draws the text box onto the screen
 void TextBox::Draw(SDL_Renderer *renderer) {
 	SDL_Colour colour = {textR, textG, textB, 0};
 	SDL_Surface *textSurface = 
@@ -36,12 +38,14 @@ void TextBox::Draw(SDL_Renderer *renderer) {
 	SDL_RenderCopy(renderer, textTexture, NULL, &rect);
 }
 
+// Checks whether a given point lies within the text box
 bool TextBox::inBox(int qx, int qy) {
 	return qx >= x && qx <= x + width && qy >= y && qy <= y + height;
 }
 
 Menu::Menu() {}
 
+// Sets up the menu, initialising the text boxes
 void Menu::Init() {
 	this->boxes["title"] = TextBox(150, 75, 245, 75, 0, 0, 0, 0,
 			"SUIDAO", 0, 0, 0, "content/font.ttf", 27);
@@ -51,6 +55,7 @@ void Menu::Init() {
 			"QUIT", 255, 0, 0, "content/font.ttf", 18);
 }
 
+// Draws the background of the menu and then its text boxes on top
 void Menu::Draw(SDL_Renderer *renderer) {
 	SDL_Rect backg;
 	backg.x = backg.y = 0;
